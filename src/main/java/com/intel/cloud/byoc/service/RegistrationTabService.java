@@ -6,5 +6,5 @@ import com.intel.cloud.byoc.model.RegistrationTab;
 
 public interface RegistrationTabService {
 
-	public List<RegistrationTab> getRegistration() ;
+public List<RegistrationTab> getRegistration() ;
 }
