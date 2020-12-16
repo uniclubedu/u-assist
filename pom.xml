@@ -9,11 +9,11 @@
 		<version>2.0.2.RELEASE</version>
 		<relativePath />
 	</parent>
-	<groupId>com.sample</groupId>
-	<artifactId>postgress</artifactId>
+	<groupId>com.intel.cloud.byoc</groupId>
+	<artifactId>iot-devcloud-act</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>postgress</name>
-	<description>Demo project for Spring Boot</description>
+	<name>iot-devcloud</name>
+	<description>Bring Your Own Container</description>
 
 	<properties>
 		<java.version>1.8</java.version>
