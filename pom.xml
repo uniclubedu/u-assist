@@ -10,9 +10,9 @@
 		<relativePath />
 	</parent>
 	<groupId>com.intel.cloud.byoc</groupId>
-	<artifactId>db-BYOC</artifactId>
+	<artifactId>iot-devcloud-act</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>db-BYOC</name>
+	<name>iot-devcloud</name>
 	<description>Bring Your Own Container</description>
 
 	<properties>
