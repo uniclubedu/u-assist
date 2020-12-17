@@ -13,7 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.byocService.get('').subscribe(
+    this.byocService.get().subscribe(
       
     );
   }
