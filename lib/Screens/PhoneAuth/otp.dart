@@ -1,7 +1,9 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Welcome/home.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+
 
 class OTPScreen extends StatefulWidget {
   final String phone;
@@ -56,7 +58,7 @@ class _OTPScreenState extends State<OTPScreen> {
               onSubmit: (pin) async {
                 try {
                   await FirebaseAuth.instance
-                      .signInWithCredential(PhoneAuthProvider.getCredential(
+                      .signInWithCredential(PhoneAuthProvider.credential(
                           verificationId: _verificationCode, smsCode: pin))
                       .then((value) async {
                     if (value.user != null) {
@@ -88,10 +90,13 @@ class _OTPScreenState extends State<OTPScreen> {
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '+91${widget.phone}',
         verificationCompleted: (AuthCredential credential) async {
+          print("verificationCompleted");
           await FirebaseAuth.instance
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
+              print("user value ");
+              print(value.user);
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => Home()),
@@ -99,7 +104,11 @@ class _OTPScreenState extends State<OTPScreen> {
             }
           });
         },
-        verificationFailed: (AuthException e) {
+        verificationFailed: (FirebaseAuthException e) {
+
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+          }
           print(e.message);
           print("varification failed");
         },
@@ -108,12 +117,20 @@ class _OTPScreenState extends State<OTPScreen> {
             print("code sent varification id {}"+verficationID);
             _verificationCode = verficationID;
           });
+          //PhoneAuthProvider.(verificationId: verificationId, smsCode: smsCode)
+          // AuthCredential credential = PhoneAuthProvider.getCredential(verificationId:
+          // verficationID, smsCode: smsCode);
+          //
+          // // Sign the user in (or link) with the credential
+          // await auth.signInWithCredential(credential);
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {
+            print("code auto retrival timeout");
             _verificationCode = verificationID;
           });
         },
+
         timeout: Duration(seconds: 120));
   }
 
@@ -122,5 +139,6 @@ class _OTPScreenState extends State<OTPScreen> {
     // TODO: implement initState
     super.initState();
     _verifyPhone();
+    print("varification completed");
   }
 }

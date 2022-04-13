@@ -1,8 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/background.dart';
 import 'package:u_assist/Screens/Login/components/body.dart';
-import 'package:u_assist/Screens/Signup/SignUp.dart';
+import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 import 'package:u_assist/Screens/Welcome/Start.dart';
 import 'package:u_assist/components/already_have_an_account_acheck.dart';
 import 'package:u_assist/components/rounded_button.dart';
@@ -15,6 +16,10 @@ import 'background.dart';
 class Body extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final GlobalKey<FormState>loginFormKey = GlobalKey<FormState>();
+
+    late String email="null", password="null";
     Size size = MediaQuery.of(context).size;
     return Background(
       key: loginFormKey,
@@ -53,7 +58,9 @@ class Body extends StatelessWidget{
             RoundedButton(
               key: Key("value6"),
               text: "LOGIN",
-              press: () {login();},
+              press: () {
+                //login();
+                },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
@@ -63,7 +70,7 @@ class Body extends StatelessWidget{
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUp();
+                      return UserRegistration();
                     },
                   ),
                 );

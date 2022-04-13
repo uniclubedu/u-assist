@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/background.dart';
-import 'package:u_assist/Screens/Signup/SignUp.dart';
+import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 import 'package:u_assist/Screens/Welcome/Start.dart';
 import 'package:u_assist/components/already_have_an_account_acheck.dart';
 import 'package:u_assist/components/rounded_button.dart';
@@ -32,7 +32,7 @@ class LoginState extends State<Login>{
 
   checkAuthentification() async{
 
-      auth.onAuthStateChanged.listen((user) {
+      auth.authStateChanges().listen((user) {
 
         if(user != null){
           Navigator.push(context, MaterialPageRoute(builder: (context) =>Start()));
@@ -136,7 +136,7 @@ class LoginState extends State<Login>{
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUp();
+                      return UserRegistration();
                     },
                   ),
                 );

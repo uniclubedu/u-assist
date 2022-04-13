@@ -26,7 +26,7 @@ apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -36,10 +36,11 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.u_assist"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -56,6 +57,9 @@ android {
         // Declare the dependency for the Firebase Authentication library
         // When using the BoM, you don't specify versions in Firebase library dependencies
         implementation 'com.google.firebase:firebase-auth'
+        implementation 'com.google.firebase:firebase-database'
+        implementation 'com.android.support:multidex:1.0.3'
+        implementation 'com.google.firebase:firebase-core'
     }
 //    dependencies {
 //        // Import the Firebase BoM

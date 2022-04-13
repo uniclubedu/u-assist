@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/Login.dart';
 import 'package:u_assist/Screens/Login/components/Login.dart';
-import 'package:u_assist/Screens/Signup/SignUp.dart';
+import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 import 'package:u_assist/Screens/Welcome/components/background.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/constants.dart';
@@ -54,7 +54,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUp();
+                      return UserRegistration();
                     },
                   ),
                 );

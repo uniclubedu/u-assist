@@ -11,11 +11,11 @@ class Start extends StatefulWidget {
 class HomePageState extends State<Start>{
 
   final FirebaseAuth auth = FirebaseAuth.instance;
-  late FirebaseUser user;
+  late User user;
   bool isLoggedIn = false;
 
   checkAuthentication() async{
-    auth.onAuthStateChanged.listen((user) {
+    auth.authStateChanges().listen((user) {
       if(user == null){
         Navigator.of(context).pushReplacementNamed("SignUp");
         //Navigator.push(context, MaterialPageRoute(builder: (context)) => Login());
@@ -23,9 +23,9 @@ class HomePageState extends State<Start>{
     });
   }
   getUser() async{
-    FirebaseUser firebaseUser = await auth.currentUser();
+    User firebaseUser = await auth.currentUser!;
     //await !firebaseUser?.reload();
-    firebaseUser = await auth.currentUser();
+    firebaseUser = await auth.currentUser!;
     if(firebaseUser != null){
       setState(() {
         this.user = firebaseUser;
