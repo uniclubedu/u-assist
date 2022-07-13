@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/background.dart';
+import 'package:u_assist/Screens/Register/dao/user_dao.dart';
 
 class UserInfoRow extends StatefulWidget {
   @override
@@ -9,6 +10,16 @@ class UserInfoRow extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfoRow> {
+
+  final userDao = new UserDao();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("init state is getting called");
+    super.initState();
+    userDao.getUserDetails();
+  }
 
   static const descTextStyle = TextStyle(
     color: Colors.black,
@@ -20,77 +31,76 @@ class _UserInfoState extends State<UserInfoRow> {
   );
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 250,
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+      child: Container(
+      width: 350,
       height: 200,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border.all(
-          color: Colors.black,
+          color: Colors.red,
           width: 5
-        )
+        ),
+        borderRadius: BorderRadius.horizontal()
       ),
-      child: Row(
-        children: [
-          Column(
+      child :Row(
+        children: <Widget>[
+          Expanded(child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Expanded(child: Row(
                 children: const [
                   Text('Jitendra Saini')
                 ],
 
-              ),
-              Row(
+              )),
+              Expanded(child: Row(
                 children: const [
                   Text('9694879050')
                 ],
-              ),
-              Row(
+              )),
+              Expanded(child: Row(
                 children: const [
                   Text('Full Time')
                 ],
-              ),
-              Row(
+              )),
+              Expanded(child: Row(
                 children:  [
-                  Column(
+                  Expanded(child: Column(
                     children: const [
                       Text('Joining Date'),
                       Text('01/01/2022')
                     ],
-                  )
+                  ))
                 ],
-              )
+              ))
             ],
-          ),
-          Column(
+          )),
+          Expanded(child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                  flex: 4,
                   child: Container(
-                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 48),
+                    height: 200,
+                    width: 200,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blueAccent,
-                      border: Border.all(
-                          color: Colors.blueAccent,
-                          width: 30.0,
-                          style: BorderStyle.solid),
-                      // image:  DecorationImage(
-                      //   fit: BoxFit.cover,
-                      //   image: AssetImage('assets/images/login_bottom.png') as ImageProvider,
-                      // ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0)
                     ),
                     child: const CircleAvatar(
                       //radius: 30.0,
-                      backgroundImage: AssetImage('assets/images/login_bottom.png') as ImageProvider,
-                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage('assets/images/profile.png')
+                      as ImageProvider,
+                      backgroundColor: Colors.white,
                     )
                   )
               )
             ],
-          )
+          ))
         ],
       ),
-    );
+    ));
   }
 }

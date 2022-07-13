@@ -10,6 +10,8 @@ import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../dashboard/UserDetails.dart';
+
 
 class UserRegistration extends StatefulWidget {
   @override
@@ -92,6 +94,10 @@ class _UserRegistrationState extends State<UserRegistration> {
                 text: "Register",
                 press: () {
                   registerUser(this);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => UserInfoRow()),
+                          (route) => false);
                 },
               ),
               SizedBox(height: size.height * 0.03),

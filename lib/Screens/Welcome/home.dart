@@ -5,6 +5,9 @@ import 'package:u_assist/Screens/PhoneAuth/login.dart';
 import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 import 'package:u_assist/Screens/dashboard/UserDetails.dart';
 
+import '../Register/dao/user_dao.dart';
+import '../Util/UserDetailsWidget.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -13,17 +16,36 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String uid ="";
 
-  static const descTextStyle = TextStyle(
-    color: Colors.black,
-    fontWeight: FontWeight.w800,
-    fontFamily: 'Roboto',
-    letterSpacing: 0.5,
-    fontSize: 18,
-    height: 2,
-  );
+  var name = "jitendra";
+  var phoneNumber = "9694879050";
+  var image = "image";
+
+  final userDao = new UserDao();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("init state is getting called");
+    super.initState();
+    userDao.getUserDetails();
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
+
+    final children = <Widget>[];
+    for (var i = 0; i < 3; i++) {
+      children.add(new UserDetailsWidget((name+i.toString()), (phoneNumber+i
+          .toString()),
+          (image+i.toString())));
+    }
+    return new ListView(
+      padding: const EdgeInsets.all(8),
+      children: children,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -65,18 +87,11 @@ class _HomeState extends State<Home> {
           //             (route) => false);},
           //     child: const Text('Register User')
           // ),
-          new UserInfoRow(),
+        // new UserDetailsWidget(),
         ],
+
       ),
     );
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // FirebaseAuth.instance.currentUser().then((FirebaseUser user) =>
-    //   uid = user.uid
-    // );
-  }
 }

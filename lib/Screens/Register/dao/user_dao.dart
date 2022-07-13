@@ -31,4 +31,19 @@ class UserDao {
     // .catchError((error)=> print("Exception while adding user account $error "));
   }
 
+  Future<void> getUserDetails()async {
+    print("Getting user details");
+    
+    final ref = FirebaseStorage.instance.ref();
+    final data = await ref.child('uassist_user').getData();
+    if(null != data){
+      print("Printing data");
+      print(data);
+    }else{
+      print("Data is not found");
+    }
+
+
+  }
+
 }

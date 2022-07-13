@@ -60,6 +60,7 @@ android {
         implementation 'com.google.firebase:firebase-database'
         implementation 'com.android.support:multidex:1.0.3'
         implementation 'com.google.firebase:firebase-core'
+        implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
     }
 //    dependencies {
 //        // Import the Firebase BoM
