@@ -1,19 +1,26 @@
 // ignore: file_names
+import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Register/dao/user_dao.dart';
 import 'package:u_assist/Screens/Register/user.dart';
 import 'package:u_assist/Screens/Signup/components/background.dart';
 import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
+import 'package:u_assist/Screens/Welcome/home.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../constants.dart';
+import '../Util/NewsCardSkelton.dart';
 import '../dashboard/UserDetails.dart';
 
 
 class UserRegistration extends StatefulWidget {
+  //StreamController <UserBean>streamController;
+  //UserRegistration(this.streamController);
   @override
   _UserRegistrationState createState() => _UserRegistrationState();
 }
@@ -25,6 +32,15 @@ class _UserRegistrationState extends State<UserRegistration> {
   late String address;
   late File _userImageFile;
 
+  late bool _isLoading;
+
+  @override
+  void initState() {
+    _isLoading = false;
+    // TODO: implement initState
+    super.initState();
+  }
+
   final userDao = UserDao();
 
   final GlobalKey<FormState>userRegistrationFrmKey = GlobalKey<FormState>();
@@ -33,12 +49,16 @@ class _UserRegistrationState extends State<UserRegistration> {
       _userImageFile = file;
   }
 
-  registerUser(_UserRegistrationState user){
+  registerUser(_UserRegistrationState user) async {
     print("Saving object to the data base");
-    User userObj  = User(fullName: user.name, mobileNumber: user.name,
+    UserBean userObj  = UserBean(fullName: user.name, mobileNumber: user.name,
         address:user.address, profileImage: user._userImageFile,
         profileImageURL:'');
-    userDao.saveUser(userObj);
+     await userDao.saveUser(userObj);
+    // UserBean? userBeanObj = null;
+    // userBean.then((value) => {userBeanObj = value});
+
+    //widget.streamController.sink.add(userBean!);
   }
 
   @override
@@ -47,8 +67,18 @@ class _UserRegistrationState extends State<UserRegistration> {
     return Scaffold(
       body: Background(
         key: userRegistrationFrmKey,
-        child: SingleChildScrollView(
+
+         child: _isLoading?
+         ListView.separated(
+           itemCount: 5,
+           itemBuilder: (context, index) => const NewsCardSkelton(),
+           separatorBuilder: (context, index) =>
+           const SizedBox(height: defaultPadding),
+         )
+             : SingleChildScrollView(
+
           child: Column(
+
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
@@ -92,11 +122,13 @@ class _UserRegistrationState extends State<UserRegistration> {
               RoundedButton(
                 key: const Key("value11"),
                 text: "Register",
-                press: () {
-                  registerUser(this);
+                press: () async {
+                  _isLoading = true;
+                   await registerUser(this);
+                   _isLoading = false;
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => UserInfoRow()),
+                      MaterialPageRoute(builder: (context) => Home()),
                           (route) => false);
                 },
               ),

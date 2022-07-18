@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:u_assist/Screens/Register/user.dart';
 
 class UserDetailsWidget extends StatefulWidget{
 
-  var name;
-  var mobileNumber;
-  var image;
+  UserBean user;
 
   @override
   State<UserDetailsWidget> createState() => _UserDetailsWidgetState();
 
-  UserDetailsWidget(this.name, this.mobileNumber, this.image);
+  UserDetailsWidget(this.user);
 }
 
 
@@ -22,7 +21,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
     fontWeight: FontWeight.w800,
     fontFamily: 'Roboto',
     letterSpacing: 0.5,
-    fontSize: 18,
+    fontSize: 10,
     height: 2,
   );
 
@@ -30,8 +29,8 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
   @override
   Widget build(BuildContext context){
     return Container(
-      height: 200.0,
-      width: 200.0,
+      //height: 200.0,
+      //width: 200.0,
       decoration: BoxDecoration(
           color: Colors.grey,
           border: Border.all(
@@ -39,12 +38,12 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
             width: 2.0,
           ),
           borderRadius: BorderRadius.circular(10.0),
-          gradient: const LinearGradient(
-              colors: [
-                Colors.black,
-                Colors.grey
-              ]
-          ),
+          // gradient: const LinearGradient(
+          //     colors: [
+          //       Colors.black,
+          //       Colors.grey
+          //     ]
+          // ),
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey ,
@@ -67,20 +66,24 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
 
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        widget.name,
+                        widget.user.fullName,
                         style: descTextStyle,
                         ),
                     ),
                     Text(
-                      'Contact Number : ${widget.mobileNumber}',
+                      'Contact Number : ${widget.user.mobileNumber}',
                       style: descTextStyle
+                    ),
+                    Text(
+                        'Address : ${widget.user.address}',
+                        style: descTextStyle
                     )
                   ],
                 )
             ),
             CircleAvatar(
               radius: 40,
-              backgroundImage: image.image,
+              backgroundImage: Image.network(widget.user.profileImageURL).image
             ),
           ],
         ),

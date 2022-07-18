@@ -4,18 +4,18 @@ import 'dart:io';
 import 'package:json_annotation/json_annotation.dart';
 //part 'user.g.dart';
 @JsonSerializable()
-class User{
+class UserBean{
   final String fullName;
   final String mobileNumber;
   final String address;
   final File ?profileImage;
   String profileImageURL;
 
-  User({required this.fullName,required this.mobileNumber,required this
+  UserBean({required this.fullName,required this.mobileNumber,required this
       .address, this.profileImage, required this.profileImageURL});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(fullName: json['fullName'] as String,
+  factory UserBean.fromJson(Map<String, dynamic> json) {
+    return UserBean(fullName: json['fullName'] as String,
       mobileNumber: json['mobileNubmer'] as String,
       address: json['address'] as String,
       profileImageURL: json['profileImageURL'] as String,
