@@ -1,9 +1,13 @@
 //import 'package:firebase_core/firebase_core.dart';
+// ignore: avoid_web_libraries_in_flutter
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
+import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 
 import 'Screens/Welcome/home.dart';
+import 'Screens/dashboard/UserDetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +23,11 @@ void main() async {
         // textTheme: const TextTheme(
         //   bodyText1: TextStyle(color: Colors.white),
         //   bodyText2: TextStyle(color: Colors.white),
-        //   new change 
+        //   new change
         // )
     ),
     debugShowCheckedModeBanner: false,
+
   ));
 }
 

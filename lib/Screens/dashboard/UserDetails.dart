@@ -78,7 +78,7 @@ class _UserInfoState extends State<UserInfoRow> {
                       // image:  DecorationImage(
                       //   fit: BoxFit.cover,
                       //   image: AssetImage('assets/images/login_bottom.png') as ImageProvider,
-                      // ),
+                      //),
                     ),
                     child: const CircleAvatar(
                       //radius: 30.0,

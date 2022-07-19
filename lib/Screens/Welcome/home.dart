@@ -42,32 +42,33 @@ class _HomeState extends State<Home> {
       ),
       body: Row(
         children: [
-          // TextButton(
-          //     style: ButtonStyle(
-          //       foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-          //       overlayColor: MaterialStateProperty.resolveWith<Color?>(
-          //             (Set<MaterialState> states) {
-          //           if (states.contains(MaterialState.hovered)) {
-          //             return Colors.blue.withOpacity(0.04);
-          //           }
-          //           if (states.contains(MaterialState.focused) ||
-          //               states.contains(MaterialState.pressed)) {
-          //             return Colors.blue.withOpacity(0.12);
-          //           }
-          //           return null; // Defer to the widget's default.
-          //         },
-          //       ),
-          //     ),
-          //     onPressed: () {
-          //       Navigator.pushAndRemoveUntil(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => UserRegistration()),
-          //             (route) => false);},
-          //     child: const Text('Register User')
-          // ),
+          TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.hovered)) {
+                      return Colors.blue.withOpacity(0.04);
+                    }
+                    if (states.contains(MaterialState.focused) ||
+                        states.contains(MaterialState.pressed)) {
+                      return Colors.blue.withOpacity(0.12);
+                    }
+                    return null; // Defer to the widget's default.
+                  },
+                ),
+              ),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserRegistration()),
+                      (route) => false);},
+              child: const Text('Register User')
+          ),
           new UserInfoRow(),
         ],
       ),
+      drawer: Drawer(),
     );
   }
 

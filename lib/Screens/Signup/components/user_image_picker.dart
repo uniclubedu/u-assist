@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' show File;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +33,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
       CircleAvatar(radius: 40,
       backgroundImage: _pickedImage!= null?FileImage(_pickedImage!):null,),
       // ignore: deprecated_member_use
-      FlatButton.icon(
+      TextButton.icon(
           onPressed: _pickImage,
           icon: Icon(Icons.image),
           label: Text('Add Profile Photo')),

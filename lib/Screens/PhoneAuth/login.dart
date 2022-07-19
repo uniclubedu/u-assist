@@ -62,4 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  FlatButton({required MaterialColor color, required Null Function() onPressed, required Text child}) {}
 }
