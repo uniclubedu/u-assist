@@ -22,7 +22,7 @@ void main() async {
         // textTheme: const TextTheme(
         //   bodyText1: TextStyle(color: Colors.white),
         //   bodyText2: TextStyle(color: Colors.white),
-        //   new change 
+        //   new change
         // )
     ),
     debugShowCheckedModeBanner: false,
@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return LoginScreen();
+    return MaterialApp(
+      home: Home(),
+    );;
   }
 }

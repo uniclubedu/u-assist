@@ -12,14 +12,12 @@ class UserDao {
   final DatabaseReference _userRef =
   FirebaseDatabase.instance.reference().child('user');
 
-  Future<UserBean> saveUser(UserBean user)  async {
+  Future<Member> saveUser(Member user)  async {
 
     print('Saving user image.');
     var userJson;
     try {
       await saveUserImage(user).then((value) => {
-      print("sleeping for 2 second ${value}"),
-          sleep(const Duration(seconds: 2)),
       user.profileImageURL = value,
       userJson= jsonEncode(user),
         print(userJson),
@@ -46,7 +44,7 @@ class UserDao {
     // .catchError((error)=> print("Exception while adding user account $error "));
   }
 
-  Future<String> saveUserImage(UserBean user) async {
+  Future<String> saveUserImage(Member user) async {
     final fileName = user.fullName + user.mobileNumber + '.jpg';
     final ref =   FirebaseStorage.instance.ref().child('profile_image')
         .child(fileName);
@@ -55,9 +53,9 @@ class UserDao {
     return imageURL;
   }
 
-  Future<List<UserBean>> getUserDetails()async {
+  Future<List<Member>> getUserDetails()async {
     print("Getting user details");
-    List<UserBean>usersData = [];
+    List<Member>usersData = [];
     try{
 
       // Get docs from collection reference
@@ -71,9 +69,7 @@ class UserDao {
         Type type = user.runtimeType;
         print(type.toString());
         Map<String, dynamic> data = jsonDecode(jsonEncode(user));
-        print("json decode");
-        print(data);
-        UserBean userObj = UserBean.fromJson(json.decode(data["user"]));
+        Member userObj = Member.fromJson(json.decode(data["user"]));
         usersData.add(userObj);
       }
       return usersData;

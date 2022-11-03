@@ -1,32 +1,49 @@
-
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
+
 //part 'user.g.dart';
 @JsonSerializable()
-class UserBean{
-  final String fullName;
-  final String mobileNumber;
-  final String address;
-  final File ?profileImage;
+class Member {
+  String fullName;
+  String mobileNumber;
+  String address;
+  File? profileImage;
   String profileImageURL;
+  var fees;
+  var shift;
+  String? joiningDate;
 
-  UserBean({required this.fullName,required this.mobileNumber,required this
-      .address, this.profileImage, required this.profileImageURL});
 
-  factory UserBean.fromJson(Map<String, dynamic> json) {
-    return UserBean(fullName: json['fullName'] as String,
+  Member(
+      {required this.fullName,
+      required this.mobileNumber,
+      required this.address,
+      this.profileImage,
+      required this.profileImageURL, this.fees, this.shift, this.joiningDate});
+
+
+  factory Member.fromJson(Map<String, dynamic> json) {
+    return Member(
+      fullName: json['fullName'] as String,
       mobileNumber: json['mobileNubmer'] as String,
       address: json['address'] as String,
+      fees: json['fees'] as String,
+      shift: json['shift'] as String,
+      joiningDate: json['joiningDate'] as String,
       profileImageURL: json['profileImageURL'] as String,
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'fullName': fullName,
       'mobileNumber': mobileNumber,
-      'address':address,
-      'profileImageURL':profileImageURL,
+      'address': address,
+      'shift': shift,
+      'fees': fees,
+      'joiningDate':joiningDate,
+      'profileImageURL': profileImageURL,
     };
   }
 }

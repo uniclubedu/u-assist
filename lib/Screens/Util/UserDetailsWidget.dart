@@ -4,7 +4,7 @@ import 'package:u_assist/Screens/Register/user.dart';
 
 class UserDetailsWidget extends StatefulWidget{
 
-  UserBean user;
+  Member user;
 
   @override
   State<UserDetailsWidget> createState() => _UserDetailsWidgetState();
@@ -76,6 +76,18 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
                     ),
                     Text(
                         'Address : ${widget.user.address}',
+                        style: descTextStyle
+                    ),
+                    Text(
+                        'Fees : ${widget.user.fees}',
+                        style: descTextStyle
+                    ),
+                    Text(
+                        'Shift : ${widget.user.shift}',
+                        style: descTextStyle
+                    ),
+                    Text(
+                        'Joining Date : ${widget.user.joiningDate}',
                         style: descTextStyle
                     )
                   ],
