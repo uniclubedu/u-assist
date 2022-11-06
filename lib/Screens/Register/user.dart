@@ -9,15 +9,17 @@ class UserBean{
   final String mobileNumber;
   final String address;
   final File ?profileImage;
+  final String date;
   String profileImageURL;
 
   UserBean({required this.fullName,required this.mobileNumber,required this
-      .address, this.profileImage, required this.profileImageURL});
+      .address, this.profileImage,required this.date, required this.profileImageURL});
 
   factory UserBean.fromJson(Map<String, dynamic> json) {
     return UserBean(fullName: json['fullName'] as String,
       mobileNumber: json['mobileNubmer'] as String,
       address: json['address'] as String,
+      date: json['date'] as String ,
       profileImageURL: json['profileImageURL'] as String,
     );
   }

@@ -30,6 +30,7 @@ class _UserRegistrationState extends State<UserRegistration> {
   late String contactNumber;
   late String emailId;
   late String address;
+  late String date;
   late File _userImageFile;
 
   late bool _isLoading;
@@ -52,7 +53,8 @@ class _UserRegistrationState extends State<UserRegistration> {
   registerUser(_UserRegistrationState user) async {
     print("Saving object to the data base");
     UserBean userObj  = UserBean(fullName: user.name, mobileNumber: user.name,
-        address:user.address, profileImage: user._userImageFile,
+        address:user.address, date: user.date ,
+        profileImage: user._userImageFile,
         profileImageURL:'');
      await userDao.saveUser(userObj);
     // UserBean? userBeanObj = null;

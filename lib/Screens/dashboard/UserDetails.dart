@@ -5,6 +5,7 @@ import 'package:u_assist/Screens/Login/components/background.dart';
 import 'package:u_assist/Screens/Register/dao/user_dao.dart';
 
 class UserInfoRow extends StatefulWidget {
+
   @override
   _UserInfoState createState() => _UserInfoState();
 }
@@ -34,12 +35,13 @@ class _UserInfoState extends State<UserInfoRow> {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
       child: Container(
-      width: 350,
-      height: 200,
+
+      height:200,
+        width: 200,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border.all(
-          color: Colors.red,
+          color: Colors.transparent,
           width: 5
         ),
         borderRadius: BorderRadius.horizontal()
@@ -82,7 +84,7 @@ class _UserInfoState extends State<UserInfoRow> {
             children: [
               Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(top: 48),
+                    margin: EdgeInsets.only(bottom:30 ),
                     height: 200,
                     width: 200,
                     decoration: BoxDecoration(
@@ -102,5 +104,6 @@ class _UserInfoState extends State<UserInfoRow> {
         ],
       ),
     ));
+
   }
 }

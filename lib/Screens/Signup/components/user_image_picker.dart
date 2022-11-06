@@ -33,10 +33,15 @@ class _UserImagePickerState extends State<UserImagePicker> {
       CircleAvatar(radius: 40,
       backgroundImage: _pickedImage!= null?FileImage(_pickedImage!):null,),
       // ignore: deprecated_member_use
-      FlatButton.icon(
-          onPressed: _pickImage,
-          icon: Icon(Icons.image),
-          label: Text('Add Profile Photo')),
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.red, // background
+          onPrimary: Colors.white, // foreground
+        ),
+        onPressed: () { },
+        child: Text('ElevatedButton with custom foreground/background'),
+      )
+
     ],);
   }
 }
