@@ -5,23 +5,24 @@ import 'package:json_annotation/json_annotation.dart';
 //part 'user.g.dart';
 @JsonSerializable()
 class Member {
-  String fullName;
-  String mobileNumber;
-  String address;
-  File? profileImage;
+  late final String fullName;
+  late final String mobileNumber;
+  late final String address;
+  late final File? profileImage;
   String profileImageURL;
   var fees;
   var shift;
   String? joiningDate;
-
 
   Member(
       {required this.fullName,
       required this.mobileNumber,
       required this.address,
       this.profileImage,
-      required this.profileImageURL, this.fees, this.shift, this.joiningDate});
-
+      required this.profileImageURL,
+      this.fees,
+      this.shift,
+      this.joiningDate});
 
   factory Member.fromJson(Map<String, dynamic> json) {
     return Member(
@@ -42,7 +43,7 @@ class Member {
       'address': address,
       'shift': shift,
       'fees': fees,
-      'joiningDate':joiningDate,
+      'joiningDate': joiningDate,
       'profileImageURL': profileImageURL,
     };
   }

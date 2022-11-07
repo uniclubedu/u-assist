@@ -26,7 +26,8 @@ class _UserRegistrationState extends State<UserRegistration> {
   late String name;
   late String contactNumber;
   late String emailId;
-  late String address = '';
+  late String address;
+  late String date;
   late File _userImageFile;
   late int shiftValue = 0;
   late int selectedRadioTile = 0;
@@ -130,7 +131,7 @@ class _UserRegistrationState extends State<UserRegistration> {
                       key: const Key("username"),
                       hintText: "Your Name",
                       onChanged: (value) {
-                        this.user.fullName = value;
+                        user.fullName = value;
                       },
                     ),
                     RoundedInputField(

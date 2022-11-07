@@ -70,7 +70,7 @@ class LoginState extends State<Login>{
               content: Text(error),
 
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                     onPressed: (){
                       Navigator.of(context).pop();
                     }

@@ -48,8 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             margin: EdgeInsets.all(10),
             width: double.infinity,
-            child: FlatButton(
-              color: Colors.blue,
+            child: TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PinPutView(_controller.text)));
