@@ -79,9 +79,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildPage() {
-    //  loadUserData();
+    loadUserData();
     final children = <Widget>[];
-    //children.add(buildFilterWidget());
     for (Member user in usersList) {
       children.add(UserDetailsWidget(user));
     }
@@ -94,7 +93,7 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Icon(Icons.arrow_back_ios, color: Colors.white)),
+            child: const Icon(Icons.arrow_back_ios, color: Colors.grey)),
         backgroundColor: Colors.purple,
         actions: [
           MaterialButton(
