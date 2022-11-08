@@ -1,0 +1,10 @@
+enum PaymentMode {
+  CASH,
+  GOOGLE_PAY,
+  PHONE_PAY,
+  PAYTM,
+  NETBANKING,
+  CREDIT_CARD,
+  DEBIT_CARD,
+  AMAZON_PAY
+}

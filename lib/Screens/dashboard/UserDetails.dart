@@ -19,7 +19,7 @@ class _UserInfoState extends State<UserInfoRow> {
     // TODO: implement initState
     print("init state is getting called");
     super.initState();
-    userDao.getUserDetails();
+    //userDao.getUserDetails();
   }
 
   static const descTextStyle = TextStyle(
@@ -53,7 +53,7 @@ class _UserInfoState extends State<UserInfoRow> {
             children: [
               Expanded(child: Row(
                 children: const [
-                  Text('Jitendra Saini')
+                  Text(' Jitendra Saini')
                 ],
 
               )),
