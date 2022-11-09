@@ -241,6 +241,7 @@ class _HomeState extends State<Home> {
       //
       // ) ,
     );
+
   }
 
   Widget buildFilterWidget() {
@@ -263,6 +264,7 @@ class _HomeState extends State<Home> {
         )),
       ],
     );
+
   }
 
   final List<String> _filters = <String>[];

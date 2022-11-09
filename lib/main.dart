@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
 import 'package:u_assist/Screens/dashboard/UserDetails.dart';
 
+import 'Screens/Signup/UserRegistration.dart';
 import 'Screens/Welcome/home.dart';
 
 void main() async {
@@ -35,6 +36,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Home(),
-    );;
+      themeMode: ThemeMode.light,
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      // routes: {
+      //   "/" :(context) => Home(),
+      //   "/signUP" :(context) => UserRegistration(),
+      //
+      //
+      // },
+    );
   }
 }
