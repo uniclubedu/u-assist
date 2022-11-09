@@ -34,8 +34,7 @@ class _UserRegistrationState extends State<UserRegistration> {
   late int selectedRadio = 0;
 
   late bool _isLoading;
-  late Member user =
-      Member(fullName: "", mobileNumber: "", address: "", profileImageURL: "");
+  late Member user = Member(fullName: '', mobileNumber: '', address: '', profileImageURL: '');
 
   @override
   void initState() {
@@ -98,7 +97,7 @@ class _UserRegistrationState extends State<UserRegistration> {
         profileImageURL: '',
         fees: user.fees,
         shift: user.shift,
-        joiningDate: this.user.joiningDate);
+        joiningDate: this.user.joiningDate, userId: '');
     await userDao.saveUser(userObj);
   }
   @override
@@ -209,7 +208,7 @@ class _UserRegistrationState extends State<UserRegistration> {
                     UserImagePicker(_pickedImageTest),
                     RoundedButton(
                       key: const Key("value11"),
-                      text: "Add",
+                      text: "Add Member",
                       press: () async {
                         _isLoading = true;
                         print(this.user.toJson());

@@ -1,6 +1,9 @@
 name: u_assist
 description: Library management app
 
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -46,6 +49,7 @@ dependencies:
   firebase_storage: ^10.2.9
   firebase_app_check: ^0.0.6+16
   syncfusion_flutter_datepicker: ^20.2.39
+  uuid: ^3.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

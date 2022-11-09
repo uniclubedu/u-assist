@@ -38,8 +38,8 @@ class _UserImagePickerState extends State<UserImagePicker> {
           primary: Colors.red, // background
           onPrimary: Colors.white, // foreground
         ),
-        onPressed: () { },
-        child: Text('ElevatedButton with custom foreground/background'),
+        onPressed: () { _pickImage();},
+        child: Text('Upload'),
       )
 
     ],);

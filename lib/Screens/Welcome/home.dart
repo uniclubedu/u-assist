@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildPage() {
-    loadUserData();
+    //loadUserData();
     final children = <Widget>[];
     for (Member user in usersList) {
       children.add(UserDetailsWidget(user));
@@ -131,6 +131,7 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: 'nee',
             onPressed: () => setState(() {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => UserRegistration()));
@@ -139,6 +140,7 @@ class _HomeState extends State<Home> {
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
+            heroTag: 'add button',
             onPressed: () => {
               showDialog(
                   context: context,
