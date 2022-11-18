@@ -1,105 +1,293 @@
 // ignore: file_names
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:u_assist/Screens/Register/dao/user_dao.dart';
-import 'package:u_assist/Screens/Register/user.dart';
+import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/Screens/Signup/components/background.dart';
 import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
-import 'package:flutter_svg/svg.dart';
 
+import '../../constants.dart';
+import '../Util/NewsCardSkelton.dart';
+import '../Welcome/home.dart';
 
-class UserRegistration extends StatefulWidget {
+class MemberRegistration extends StatefulWidget {
+  //StreamController <UserBean>streamController;
+  //UserRegistration(this.streamController);
   @override
-  _UserRegistrationState createState() => _UserRegistrationState();
+  _MemberRegistrationState createState() => _MemberRegistrationState();
 }
 
-class _UserRegistrationState extends State<UserRegistration> {
+class _MemberRegistrationState extends State<MemberRegistration> {
   late String name;
   late String contactNumber;
   late String emailId;
   late String address;
+  late String date;
   late File _userImageFile;
+  late int shiftValue = 0;
+  late int selectedShift = 0;
+  late int selectedRadio = 0;
+  late int selectedMembership =0;
+
+  late bool _isLoading;
+  late Member user = Member(fullName: '', mobileNumber: '', address: '', profileImageURL: '');
+
+  @override
+  void initState() {
+    _isLoading = false;
+    user.shift = "";
+    selectedRadio = 0;
+    selectedShift = 0;
+    // TODO: implement initState
+    super.initState();
+  }
 
   final userDao = UserDao();
 
-  final GlobalKey<FormState>userRegistrationFrmKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> userRegistrationFrmKey = GlobalKey<FormState>();
 
-  void _pickedImageTest(File file){
-      _userImageFile = file;
+  void _pickedImageTest(File file) {
+    this.user.profileImage = file;
   }
 
-  registerUser(_UserRegistrationState user){
+  final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    onPrimary: Colors.white,
+    minimumSize: Size(88, 36),
+    primary: Colors.purple,
+    padding: EdgeInsets.symmetric(horizontal: 16),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2)),
+    ),
+  );
+
+  setSelectedRadioTile(var val) {
+    setState(() {
+      selectedShift = val;
+      user.shift = val.toString();
+    });
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context, bool isStartDate, bool isEndDate) async {
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        if(isStartDate){
+          user.membershipStartDate = formatter.format(picked);
+        }else if(isEndDate){
+          user.membershipEndDate = formatter.format(picked);
+        }
+      });
+    }
+  }
+
+  registerUser(Member user) async {
     print("Saving object to the data base");
-    User userObj  = User(fullName: user.name, mobileNumber: user.name,
-        address:user.address, profileImage: user._userImageFile,
-        profileImageURL:'');
-    userDao.saveUser(userObj);
+    Member userObj = Member(
+        fullName: user.fullName,
+        mobileNumber: user.mobileNumber,
+        address: user.address,
+        profileImage: user.profileImage,
+        profileImageURL: '',
+        fees: user.fees,
+        shift: user.shift,
+        membershipStartDate: user.membershipStartDate,
+        membershipEndDate: user.membershipEndDate,
+        joiningDate: this.user.joiningDate, memberId: '');
+    await userDao.saveUser(userObj);
   }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Member "),
+        leading: MaterialButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Icon(Icons.arrow_back_ios, color: Colors.white)),
+        backgroundColor: Colors.purple,
+      ),
       body: Background(
         key: userRegistrationFrmKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                "Registration",
-                style: TextStyle(fontWeight: FontWeight.bold),
+        child: _isLoading
+            ? ListView.separated(
+                itemCount: 5,
+                itemBuilder: (context, index) => const NewsCardSkelton(),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: defaultPadding),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RoundedInputField(
+                      key: const Key("username"),
+                      hintText: "Your Name",
+                      onChanged: (value) {
+                        user.fullName = value;
+                      },
+                    ),
+                    RoundedInputField(
+                      key: const Key("mobile"),
+                      hintText: "Contact Number",
+                      icon: Icons.phone,
+                      onChanged: (value) {
+                        this.user.mobileNumber = value;
+                      },
+                    ),
+                    RoundedInputField(
+                      key: const Key("fees"),
+                      hintText: "Fees",
+                      icon: Icons.account_balance_wallet,
+                      onChanged: (value) {
+                        this.user.fees = value;
+                      },
+                    ),
+                    RoundedInputField(
+                      key: const Key("address"),
+                      hintText: "Full Address",
+                      icon: Icons.account_box_sharp,
+                      onChanged: (value) {
+                        user.address = value;
+                      },
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 250, 0),
+                      child: Text(
+                        'SHIFT',
+                        style: TextStyle(
+                            color: Colors.purple,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Roboto',
+                          letterSpacing: 0.5,
+                          fontSize: 20,
+                        )
+                      ),
+                    ),
+                    RadioListTile(
+                        value: 1,
+                        groupValue: selectedShift,
+                        title: Text("Full Time"),
+                        onChanged: (val) {
+                          print("Radio Tile pressed $val");
+                          setSelectedRadioTile(val);
+                        },
+                        activeColor: Colors.red,
+                        selected: true),
+                    RadioListTile(
+                      value: 2,
+                      groupValue: selectedShift,
+                      title: Text("Morning"),
+                      onChanged: (val) {
+                        print("Radio Tile pressed $val");
+                        setSelectedRadioTile(val);
+                      },
+                      activeColor: Colors.red,
+                    ),
+                    RadioListTile(
+                      value: 3,
+                      groupValue: selectedShift,
+                      title: Text("Evening"),
+                      onChanged: (val) {
+                        print("Radio Tile pressed $val");
+                        setSelectedRadioTile(val);
+                      },
+                      activeColor: Colors.red,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 200, 0),
+                      child: Text(
+                          'MEMBERSHIP',
+                          style: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'Roboto',
+                            letterSpacing: 0.5,
+                            fontSize: 20,
+                          )
+                      ),
+                    ),
+                    RadioListTile(
+                        value: 100,
+                        groupValue: selectedMembership,
+                        title: Text("Monthly"),
+                        onChanged: (membership){
+                          print("membership selected ${membership}");
+                          setMembership(membership);
+                        }
+                    ),
+                    RadioListTile(
+                        value: 100,
+                        groupValue: selectedMembership,
+                        title: Text("Quarterly"),
+                        onChanged: (membership){
+                          print("membership selected ${membership}");
+                          setMembership(membership);
+                        }
+                    ),
+                    ElevatedButton(
+                      style: raisedButtonStyle,
+                      child: Container(
+                        child: this.user.membershipStartDate == null
+                            ? Text('Membership Start Date')
+                            : Text(this.user.membershipStartDate!),
+                      ),
+                      onPressed: () {
+                        _selectDate(context,true,false);
+                      },
+                    ),
+                    ElevatedButton(
+                      style: raisedButtonStyle,
+                      child: Container(
+                        child: this.user.membershipEndDate == null
+                            ? Text('Membership End Date')
+                            : Text(this.user.membershipEndDate!),
+                      ),
+                      onPressed: () {
+                        _selectDate(context,false,true);
+                      },
+                    ),
+                    UserImagePicker(_pickedImageTest),
+                    RoundedButton(
+                      key: const Key("value11"),
+                      text: "Add Member",
+                      press: () async {
+                        _isLoading = true;
+                        print(this.user.toJson());
+                        await registerUser(this.user);
+                        _isLoading = false;
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home()),
+                                (route) => false);
+                      },
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                  ],
+                ),
               ),
-              SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/signup.svg",
-                height: size.height * 0.35,
-              ),
-              RoundedInputField(
-                key: const Key("username"),
-                hintText: "Your Name",
-                onChanged: (value) {
-                  this.name= value;
-                },
-              ),
-              RoundedInputField(
-                key: const Key("mobile"),
-                hintText: "Contact Number",
-                onChanged: (value) {
-                  this.contactNumber= value;
-                },
-              ),
-              RoundedInputField(
-                key: const Key("email"),
-                hintText: "Email",
-                onChanged: (value) {
-                  emailId= value;
-                },
-              ),
-              RoundedInputField(
-                key: const Key("address"),
-                hintText: "Full Address",
-                onChanged: (value) {
-                  address= value;
-                },
-              ),
-              UserImagePicker(_pickedImageTest),
-              RoundedButton(
-                key: const Key("value11"),
-                text: "Register",
-                press: () {
-                  registerUser(this);
-                },
-              ),
-              SizedBox(height: size.height * 0.03),
-            ],
-          ),
-        ),
       ),
     );
   }
 
+  void setMembership(var membership) {
+    setState(() {
+      selectedMembership = membership;
+      selectedMembership = membership;
+      user.membership = membership.toString();
+    });
+  }
 }

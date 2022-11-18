@@ -55,29 +55,8 @@ class _OTPScreenState extends State<OTPScreen> {
               selectedFieldDecoration: pinPutDecoration,
               followingFieldDecoration: pinPutDecoration,
               pinAnimationType: PinAnimationType.fade,
-              onSubmit: (pin) async {
-                try {
-                  await FirebaseAuth.instance
-                      .signInWithCredential(PhoneAuthProvider.credential(
-                          verificationId: _verificationCode, smsCode: pin))
-                      .then((value) async {
-                    if (value.user != null) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                          (route) => false);
-                    }
-                  });
-                } catch (e) {
-                  FocusScope.of(context).unfocus();
-                  // void showInSnackBar(String value) {
-                  //   _scaffoldkey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
-                  // }
-                  // _scaffoldkey.currentState.showBottomSheet(new SnackBar(content:
-                  // Text
-                  //   ('invalid OTP')));
-                }
-              },
+              onSubmit: (pin) => {
+                login(pin,context)},
             ),
           )
         ],
@@ -85,12 +64,35 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  _verifyPhone() async {
+  Future<void> login(String pin, BuildContext context) async {
+                   try {
+                     await FirebaseAuth.instance
+                         .signInWithCredential(PhoneAuthProvider.credential(
+                             verificationId: _verificationCode, smsCode: pin))
+                         .then((value) async {
+                       if (value.user != null) {
+                         Navigator.pushAndRemoveUntil(
+                             context,
+                             MaterialPageRoute(builder: (context) => Home()),
+                             (route) => false);
+                       }
+                     });
+                   } catch (e) {
+                     FocusScope.of(context).unfocus();
+                     // void showInSnackBar(String value) {
+                     //   _scaffoldkey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
+                     // }
+                     // _scaffoldkey.currentState.showBottomSheet(new SnackBar(content:
+                     // Text
+                     //   ('invalid OTP')));
+                   }
+  }
+
+  _verifyPhone()  {
     print("varifying phone otp");
-    await FirebaseAuth.instance.verifyPhoneNumber(
+     FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '+91${widget.phone}',
         verificationCompleted: (AuthCredential credential) async {
-          print("verificationCompleted");
           await FirebaseAuth.instance
               .signInWithCredential(credential)
               .then((value) async {

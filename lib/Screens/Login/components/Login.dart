@@ -136,7 +136,7 @@ class LoginState extends State<Login>{
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return UserRegistration();
+                      return MemberRegistration();
                     },
                   ),
                 );

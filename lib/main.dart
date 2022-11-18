@@ -1,18 +1,17 @@
 //import 'package:firebase_core/firebase_core.dart';
-// ignore: avoid_web_libraries_in_flutter
-
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
-import 'package:u_assist/Screens/Signup/UserRegistration.dart';
+import 'package:u_assist/Screens/dashboard/UserDetails.dart';
 
 import 'Screens/Welcome/home.dart';
-import 'Screens/dashboard/UserDetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
   );
+  FirebaseAppCheck.instance.activate();
   // FirebaseApp.instance.options.
   runApp(MaterialApp(
     home: MyApp(),
@@ -27,7 +26,6 @@ void main() async {
         // )
     ),
     debugShowCheckedModeBanner: false,
-
   ));
 }
 
@@ -35,6 +33,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Home();
+    return MaterialApp(
+      home: Home(),
+    );
   }
 }

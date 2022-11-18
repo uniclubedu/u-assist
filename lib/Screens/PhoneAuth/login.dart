@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/otp.dart';
 
+import 'OTPNew.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -46,15 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             margin: EdgeInsets.all(10),
             width: double.infinity,
-            child: FlatButton(
-              color: Colors.blue,
+            child: TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => OTPScreen(_controller.text)));
+                    builder: (context) => PinPutView(_controller.text)));
               },
               child: Text(
                 'Next',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black54),
               ),
             ),
           )

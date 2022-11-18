@@ -1,6 +1,7 @@
 name: u_assist
 description: Library management app
 
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,6 +45,10 @@ dependencies:
   cloud_firestore: ^3.1.10
   image_picker: ^0.8.4+10
   firebase_storage: ^10.2.9
+  firebase_app_check: ^0.0.6+16
+  syncfusion_flutter_datepicker: ^20.2.39
+  uuid: ^3.0.6
+  expandable_datatable: ^0.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

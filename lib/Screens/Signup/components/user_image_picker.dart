@@ -1,4 +1,4 @@
-import 'dart:io' show File;
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,13 +30,19 @@ class _UserImagePickerState extends State<UserImagePicker> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      CircleAvatar(radius: 40,
+      if(_pickedImage!= null)
+        CircleAvatar(radius: 40,
       backgroundImage: _pickedImage!= null?FileImage(_pickedImage!):null,),
       // ignore: deprecated_member_use
-      TextButton.icon(
-          onPressed: _pickImage,
-          icon: Icon(Icons.image),
-          label: Text('Add Profile Photo')),
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.purple, // background
+          onPrimary: Colors.white, // foreground
+        ),
+        onPressed: () { _pickImage();},
+        child: Text('Upload Picture'),
+      )
+
     ],);
   }
 }
