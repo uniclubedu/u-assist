@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Text(
                 'Next',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black54),
               ),
             ),
           )
@@ -63,4 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  FlatButton({required MaterialColor color, required Null Function() onPressed, required Text child}) {}
 }

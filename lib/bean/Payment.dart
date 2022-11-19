@@ -1,15 +1,16 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:u_assist/bean/PaymentMode.dart';
+import 'package:intl/src/intl/date_format.dart';
 
 class Payment {
 
-  late final String memberId;
+  String memberId;
 
-  late final String date;
-  late final double amount;
-
-  late final PaymentMode paymentMode;
+  late DateTime date;
+  late  double amount;
+  late String paymentMode;
 
 
   Payment({
@@ -17,16 +18,15 @@ class Payment {
     required this.date,
     required this.amount,
     required this.paymentMode,
-
-
   });
 
   factory Payment.fromJson(Map<String, dynamic> json){
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     return Payment(
       memberId: json['memberId'] as String,
       amount: json['amount'] as double,
-      date: json['date'] as String,
-      paymentMode: json['paymentMOde'] as PaymentMode,
+      date: (json['date'] as Timestamp).toDate(),
+      paymentMode: json['paymentMode'] as String,
     );
   }
 

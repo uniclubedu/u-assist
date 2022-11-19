@@ -30,16 +30,17 @@ class _UserImagePickerState extends State<UserImagePicker> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      CircleAvatar(radius: 40,
+      if(_pickedImage!= null)
+        CircleAvatar(radius: 40,
       backgroundImage: _pickedImage!= null?FileImage(_pickedImage!):null,),
       // ignore: deprecated_member_use
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.red, // background
+          primary: Colors.purple, // background
           onPrimary: Colors.white, // foreground
         ),
-        onPressed: () { },
-        child: Text('ElevatedButton with custom foreground/background'),
+        onPressed: () { _pickImage();},
+        child: Text('Upload Picture'),
       )
 
     ],);

@@ -3,23 +3,28 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:u_assist/Screens/Util/UserDetailsWidget.dart';
+import 'package:u_assist/Screens/Welcome/home.dart';
+import 'package:u_assist/bean/AddPaymentWigdet.dart';
+import 'package:u_assist/bean/PaymentHistory.dart';
 
-import 'Register/user.dart';
+import 'Register/dao/user_dao.dart';
+import 'Register/member.dart';
+import 'Signup/MemberUpdate.dart';
 import 'Signup/UserRegistration.dart';
 import 'dashboard/UserDetails.dart';
 
 class MemberProfile extends StatefulWidget {
-  late Member user;
+   Member member;
 
   @override
   State<MemberProfile> createState() => _MemberProfile();
 
-  MemberProfile(this.user);
+  MemberProfile(this.member);
 }
 
 class _MemberProfile extends State<MemberProfile> {
   static const IconData delete = IconData(0xe1b9, fontFamily: 'MaterialIcons');
-
+  final userDao = new UserDao();
   //static const IconData edit = IconData(0xe89b, fontFamily: 'MaterialIcons');
 
   Image image = Image.asset("assets/images/profile.png");
@@ -27,6 +32,13 @@ class _MemberProfile extends State<MemberProfile> {
 
   static const IconData arrow_forward =
       IconData(0xe09c, fontFamily: 'MaterialIcons', matchTextDirection: true);
+
+  Future<void> deleteMember() async {
+    stdout.writeln("delete member");
+    Future<void> future =  userDao.deleteUser(widget.member);
+    setState(() {});
+    return future;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +59,7 @@ class _MemberProfile extends State<MemberProfile> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                height: 200,
+                height: 250,
                 child: Card(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,41 +67,61 @@ class _MemberProfile extends State<MemberProfile> {
                       Container(
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: CircleAvatar(
-                            radius: 50,
+                            radius: 40,
                             backgroundImage:
-                                Image.network(widget.user.profileImageURL)
+                                Image.network(widget.member.profileImageURL)
                                     .image,
                           )),
                       SizedBox(
-                        width: 150,
+                        //width: 150,
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //  Text("Hello how are you"),
                               Text(
-                                'Name :  ${widget.user.fullName} ',
+                                ' ${widget.member.fullName} ',
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.black26),
+                                    fontSize: 20, color: Colors.black),
                               ),
                               const Divider(),
                               Text(
-                                'address : ${widget.user.address} ',
+                                '${widget.member.mobileNumber} ',
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.black26),
+                                    fontSize: 12, color: Colors.black),
                               ),
-                              const Divider(),
-                              Text(
-                                'date : ${widget.user.joiningDate} ',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.black26),
-                              ),
-                              const Divider(),
 
+                              const Divider(),
                               Text(
-                                'Shift: ${widget.user.shift} ',
+                                'Address : ${widget.member.address} ',
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.black26),
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Memebrship Start : ${widget.member.membershipStartDate} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Membership End : ${widget.member.membershipEndDate} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Shift: ${widget.member.shift} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Fees : ${widget.member.fees} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
                               ),
                               // Text(" details"),
                             ],
@@ -99,7 +131,7 @@ class _MemberProfile extends State<MemberProfile> {
 
                       Container(
                         height: 200,
-                        padding: const EdgeInsets.fromLTRB(60, 10, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(60, 10, 0, 0),
                         child: Column(
                           children: [
                             GestureDetector(
@@ -108,7 +140,7 @@ class _MemberProfile extends State<MemberProfile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            UserRegistration()));
+                                            MemberUpdate(widget.member)));
                               }),
                               child: Container(
                                 child: Icon(
@@ -119,11 +151,9 @@ class _MemberProfile extends State<MemberProfile> {
                             ),
                             GestureDetector(
                               onTap: () => setState(() {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            UserRegistration()));
+                                  deleteMember().then((value) => setState((){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                                  }));
                               }),
                               child: Container(
                                 padding:
@@ -173,7 +203,11 @@ class _MemberProfile extends State<MemberProfile> {
                                   children: [
                                     TextButton.icon(
                                       // <-- ElevatedButton
-                                      onPressed: () {},
+                                      onPressed: () {
+
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistory(widget.member)));
+
+                                      },
                                       style: TextButton.styleFrom(primary: Colors.purple),
                                       icon: Text('Payment History', style: TextStyle( fontSize: 15)),
                                       label: Padding(
@@ -192,14 +226,18 @@ class _MemberProfile extends State<MemberProfile> {
                                   children: [
                                     TextButton.icon(
                                       // <-- ElevatedButton
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        print("member profile hello");
+                                        print(widget.member.toJson());
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddPaymentWigdet(widget.member)));
+                                      },
                                       style: TextButton.styleFrom(primary: Colors.purple),
                                       icon: Text('Add Payment', style: TextStyle( fontSize: 15)),
-                                      label: Padding(
+                                      label: const Padding(
                                         child: Icon(
                                           Icons.add,
                                           size: 20.0,
-                                        ), padding: const EdgeInsets.only(left: 210),
+                                        ), padding: EdgeInsets.only(left: 210),
                                       ),
 
                                     ),
