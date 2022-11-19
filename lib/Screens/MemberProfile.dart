@@ -59,7 +59,7 @@ class _MemberProfile extends State<MemberProfile> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                height: 200,
+                height: 250,
                 child: Card(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,46 +67,59 @@ class _MemberProfile extends State<MemberProfile> {
                       Container(
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: CircleAvatar(
-                            radius: 50,
+                            radius: 40,
                             backgroundImage:
                                 Image.network(widget.member.profileImageURL)
                                     .image,
                           )),
                       SizedBox(
-                        width: 150,
+                        //width: 150,
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+
+                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //  Text("Hello how are you"),
                               Text(
-                                'Name :  ${widget.member.fullName} ',
+                                ' ${widget.member.fullName} ',
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.black),
                               ),
                               const Divider(),
                               Text(
-                                'Contact : ${widget.member.mobileNumber} ',
+                                '${widget.member.mobileNumber} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
 
                               const Divider(),
                               Text(
-                                'address : ${widget.member.address} ',
+                                'Address : ${widget.member.address} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
                               const Divider(),
                               Text(
-                                'MS Date : ${widget.member.membershipStartDate} ',
+                                'Memebrship Start : ${widget.member.membershipStartDate} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
                               const Divider(),
-
+                              Text(
+                                'Membership End : ${widget.member.membershipEndDate} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
                               Text(
                                 'Shift: ${widget.member.shift} ',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Fees : ${widget.member.fees} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
@@ -118,7 +131,7 @@ class _MemberProfile extends State<MemberProfile> {
 
                       Container(
                         height: 200,
-                        padding: const EdgeInsets.fromLTRB(60, 10, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(60, 10, 0, 0),
                         child: Column(
                           children: [
                             GestureDetector(

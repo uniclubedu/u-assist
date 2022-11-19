@@ -50,15 +50,33 @@ class UserDao {
         };
   }
 
-  Future<void> deleteUser(Member member) async {
+  Future<Set<void>> deleteUser(Member member) async {
     stdout.writeln("Delete user ${member.fullName}");
+    await deleteUserImage(member.profileImageURL);
     var userSnap = await FirebaseFirestore.instance
         .collection(Constant.USER_COLLECTION_NAME)
         .where('userId', isEqualTo: member.memberId)
         .get();
     for (var doc in userSnap.docs) {
-      return await doc.reference.delete();
+      return await doc.reference.delete().then((value) =>
+      {
+        stdout.write("user deleted successfully")
+      }).catchError((error) =>{
+        stderr.write("Error while deleting user "),
+      });
     }
+    throw Future(() => null);
+  }
+
+   Future<String> deleteUserImage(String url) async {
+    stdout.write("Deleting file");
+    await FirebaseStorage.instance.refFromURL(url).delete().then((value) =>
+    {
+      print("Deleted successfully ")
+    }).catchError((error) =>{
+      stderr.write("Failed to delete image file ${error}"),
+    });
+    return "Deleted";
   }
 
   Future<void>  updateUser(Member member) async {

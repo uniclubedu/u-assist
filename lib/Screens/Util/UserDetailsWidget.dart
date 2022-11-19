@@ -23,7 +23,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
     fontFamily: 'Roboto',
     letterSpacing: 0.5,
     fontSize: 10,
-    height: 3,
+    height: 5,
   );
 
   Image image = Image.asset("assets/images/profile.png");
@@ -31,9 +31,9 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      height: 280,
-      width: 200,
+      margin: const EdgeInsets.fromLTRB(0, 0, 0,0),
+      height: 150,
+      width: 280,
       //padding: const EdgeInsets.all(26),
       child: InkWell(
           onTap: (){
@@ -53,74 +53,29 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 150,
+            width: 170,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(0,0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(10,0, 10,0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
-                  //  Text("Hello how are you"),
-                  Text('Name : ${widget.user.fullName} ',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black
-                    ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0,0, 80,0),
+                    child:  Text('${widget.user.fullName} ',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black
+                      ),
 
-                  ),
+                    ),
+                  )
+                  ,
                   const Divider(),
-
-                  Text('Contact No. : ${widget.user.mobileNumber}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                  ),
+                  buildMemberAttributes(widget.user.mobileNumber),
                   const Divider(),
-                  Text('address : ${widget.user.address}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-
-
-                  ),
+                  buildMemberAttributes("Address :"+widget.user.address),
                   const Divider(),
-                  Text('Membership Start Date : ${widget.user.membershipStartDate}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-
-
-                  ),
-                  const Divider(),
-                  Text('Membership End Date : ${widget.user.membershipStartDate}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                  ),
-                  const Divider(),
-
-                  Text('Shift: ${widget.user.shift}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                  ),
-                  const Divider(),
-                  Text('Fees: ${widget.user.fees}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                  ),
-                const Divider(),
-                  Text('Amount Paid: ${widget.user.amountPaid}',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                  ),
+                  buildMemberAttributes("Amount Paid :"+(widget.user.amountPaid.toString())),
 
                 //  Text(" details"),
 
@@ -132,8 +87,8 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
 
           if(widget.user.profileImageURL != null && widget.user.profileImageURL != '')
             Container(
-                padding: const EdgeInsets.fromLTRB(60,10, 0, 20),
-                child: CircleAvatar(radius: 60,
+                padding: const EdgeInsets.fromLTRB(80,10, 0, 20),
+                child: CircleAvatar(radius: 40,
                   backgroundImage:Image.network(widget.user.profileImageURL).image,
                 )
             )
@@ -142,5 +97,17 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
     ),
       ),
     );
+  }
+
+  Container buildMemberAttributes(var parameter) {
+    return Container(
+
+                child: Text('${parameter}',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black
+                      ),
+                    )
+                );
   }
 }

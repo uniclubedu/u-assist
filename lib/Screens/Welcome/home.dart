@@ -93,23 +93,10 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Icon(Icons.arrow_back_ios, color: Colors.grey)),
+           // child: const Icon(Icons.arrow_back_ios, color: Colors.grey)
+        ),
         backgroundColor: Colors.purple,
         actions: [
-          MaterialButton(
-              onPressed: () {
-                Map<String, dynamic> filters = Map();
-                filters['isPaid'] = (isPaid) ? 1 : 0;
-                filters['isFree'] = (isFree) ? 1 : 0;
-                filters['Latest'] = (isLatest) ? 1 : 0;
-                filters['Old'] = (isOld) ? 1 : 0;
-                //filters['cat'] = (selected);
-                Navigator.pop(context, jsonEncode(filters));
-              },
-              child: Text(
-                "Apply",
-                style: TextStyle(color: Colors.white),
-              )),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {

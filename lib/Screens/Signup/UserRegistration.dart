@@ -11,6 +11,7 @@ import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
 
+import '../../components/text_field_container.dart';
 import '../../constants.dart';
 import '../Util/NewsCardSkelton.dart';
 import '../Welcome/home.dart';
@@ -37,6 +38,16 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   late bool _isLoading;
   late Member user = Member(fullName: '', mobileNumber: '', address: '', profileImageURL: '');
 
+  String? get _errorText {
+    final userName = _userNameController.value.text;
+    if (userName.isEmpty)
+      return 'Can\'t be empty';
+    if(userName.length <3){
+      return 'Too short';
+    }
+    return null;
+  }
+
   @override
   void initState() {
     _isLoading = false;
@@ -45,6 +56,14 @@ class _MemberRegistrationState extends State<MemberRegistration> {
     selectedShift = 0;
     // TODO: implement initState
     super.initState();
+  }
+
+  TextEditingController _userNameController = TextEditingController();
+
+  @override
+  void dispose(){
+    _userNameController.dispose();
+    super.dispose();
   }
 
   final userDao = UserDao();
@@ -133,6 +152,31 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    TextFieldContainer(
+                        key: Key("name"),
+                child: TextFormField(
+                  controller: _userNameController,
+                      validator: (name){
+                    print("validation name ${name}");
+                      if(user.fullName == null ||user.fullName.length <3){
+                        return "Enter a valid user name";
+                      }else{
+                        return null;
+                      }
+                      },
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                          labelText: 'Name',
+                        errorText: "Enter you name",
+                      ),
+                      keyboardType: TextInputType.text,
+
+                      //validator: validateName,
+                    onChanged: (value) {
+                      user.fullName = value;
+                    },
+                    )
+                    ),
                     RoundedInputField(
                       key: const Key("username"),
                       hintText: "Your Name",
@@ -221,7 +265,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       ),
                     ),
                     RadioListTile(
-                        value: 100,
+                        value: 100 ,
                         groupValue: selectedMembership,
                         title: Text("Monthly"),
                         onChanged: (membership){
@@ -230,7 +274,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                         }
                     ),
                     RadioListTile(
-                        value: 100,
+                        value: 101,
                         groupValue: selectedMembership,
                         title: Text("Quarterly"),
                         onChanged: (membership){
@@ -274,6 +318,12 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                             MaterialPageRoute(builder: (context) => Home()),
                                 (route) => false);
                       },
+
+
+
+
+
+
                     ),
                     SizedBox(height: size.height * 0.03),
                   ],
