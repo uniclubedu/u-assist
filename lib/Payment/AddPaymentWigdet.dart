@@ -1,18 +1,15 @@
 // ignore: file_names
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:u_assist/Payment/Payment.dart';
 import 'package:u_assist/Payment/dao/payment_dao.dart';
 import 'package:u_assist/Screens/MemberProfile.dart';
 import 'package:u_assist/Screens/Register/member.dart';
-import 'package:u_assist/bean/Payment.dart';
 
 import '../components/rounded_button.dart';
 import '../components/rounded_input_field.dart';
-import '../util/Constant.dart';
-import 'PaymentMode.dart';
 
 final items = [
   'CASH',
@@ -25,6 +22,7 @@ final items = [
   'AMAZON_PAY',
 ];
 
+// ignore: must_be_immutable
 class AddPaymentWigdet extends StatefulWidget {
   late String memberId;
   late Payment payment;
@@ -35,18 +33,17 @@ class AddPaymentWigdet extends StatefulWidget {
   @override
   _PaymentWidgetState createState() => _PaymentWidgetState();
 
-  AddPaymentWigdet(Member member) {
-    this.member = member;
-  }
+  AddPaymentWigdet(this.member, {Key? key}) : super(key: key);
 }
 
 class _PaymentWidgetState extends State<AddPaymentWigdet> {
   String dropdownValue = items.first;
-  late String memberId= widget.member.memberId;
+  late String memberId = widget.member.memberId;
   DateTime selectedDate = DateTime.now();
-  String? paymentDate ;
+  String? paymentDate;
+
   late double amount;
-  late String paymentMode='CASH';
+  late String paymentMode = 'CASH';
   late bool _isLoading;
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -182,8 +179,15 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
   }
 
   savePayment() async {
-    Payment payment = Payment(memberId: memberId, date: selectedDate!, amount: amount, paymentMode: paymentMode,);
-    print("Saving payment details: ${payment.toJson()}");
-    paymentDao.savePayment(payment).then((value) => print("Payment saved successfully"));
+    Payment payment = Payment(
+      memberId: memberId,
+      date: selectedDate,
+      amount: amount,
+      paymentMode: paymentMode,
+    );
+    print("Saving payment detflutter_testails: ${payment.toJson()}");
+    paymentDao
+        .savePayment(payment)
+        .then((value) => print("Payment saved successfully"));
   }
 }

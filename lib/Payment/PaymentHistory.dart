@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:expandable_datatable/expandable_datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:u_assist/bean/Payment.dart';
+import 'package:u_assist/Payment/Payment.dart';
 
 import '../Payment/dao/payment_dao.dart';
 import '../Screens/Register/member.dart';

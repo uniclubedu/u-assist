@@ -2,7 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Welcome/home.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
 
 
 class OTPScreen extends StatefulWidget {
@@ -42,23 +42,23 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: PinPut(
-              fieldsCount: 6,
-              textStyle: const TextStyle(fontSize: 25.0, color: Colors.white),
-              eachFieldWidth: 40.0,
-              eachFieldHeight: 55.0,
-              focusNode: _pinPutFocusNode,
-              controller: _pinPutController,
-              submittedFieldDecoration: pinPutDecoration,
-              selectedFieldDecoration: pinPutDecoration,
-              followingFieldDecoration: pinPutDecoration,
-              pinAnimationType: PinAnimationType.fade,
-              onSubmit: (pin) => {
-                login(pin,context)},
-            ),
-          )
+          // Padding(
+          //   padding: const EdgeInsets.all(30.0),
+          //   child: PinPut(
+          //     fieldsCount: 6,
+          //     textStyle: const TextStyle(fontSize: 25.0, color: Colors.white),
+          //     eachFieldWidth: 40.0,
+          //     eachFieldHeight: 55.0,
+          //     focusNode: _pinPutFocusNode,
+          //     controller: _pinPutController,
+          //     submittedFieldDecoration: pinPutDecoration,
+          //     selectedFieldDecoration: pinPutDecoration,
+          //     followingFieldDecoration: pinPutDecoration,
+          //     pinAnimationType: PinAnimationType.fade,
+          //     onSubmit: (pin) => {
+          //       login(pin,context)},
+          //   ),
+          // )
         ],
       ),
     );

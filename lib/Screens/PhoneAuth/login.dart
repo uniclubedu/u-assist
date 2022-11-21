@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/otp.dart';
 
+import '../../components/rounded_button.dart';
 import 'OTPNew.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Phone Auth'),
+        title: Text('Login'),
+        backgroundColor: Colors.purple,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,16 +50,24 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             margin: EdgeInsets.all(10),
             width: double.infinity,
-            child: TextButton(
-              onPressed: () {
+            child: RoundedButton(
+              key: const Key("value11"),
+              text: "Login",
+              press: () async {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PinPutView(_controller.text)));
               },
-              child: Text(
-                'Next',
-                style: TextStyle(color: Colors.black54),
-              ),
             ),
+            // child: TextButton(
+            //   onPressed: () {
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (context) => PinPutView(_controller.text)));
+            //   },
+            //   child: Text(
+            //     'Next',
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            // ),
           )
         ],
       ),
