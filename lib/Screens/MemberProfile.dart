@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:u_assist/Screens/Util/UserDetailsWidget.dart';
 import 'package:u_assist/Screens/Welcome/home.dart';
-import 'package:u_assist/bean/AddPaymentWigdet.dart';
-import 'package:u_assist/bean/PaymentHistory.dart';
+import 'package:u_assist/Payment/AddPaymentWigdet.dart';
+import 'package:u_assist/Payment/PaymentHistory.dart';
 
 import 'Register/dao/user_dao.dart';
 import 'Register/member.dart';

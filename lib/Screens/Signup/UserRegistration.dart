@@ -152,31 +152,31 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    TextFieldContainer(
-                        key: Key("name"),
-                child: TextFormField(
-                  controller: _userNameController,
-                      validator: (name){
-                    print("validation name ${name}");
-                      if(user.fullName == null ||user.fullName.length <3){
-                        return "Enter a valid user name";
-                      }else{
-                        return null;
-                      }
-                      },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                          labelText: 'Name',
-                        errorText: "Enter you name",
-                      ),
-                      keyboardType: TextInputType.text,
-
-                      //validator: validateName,
-                    onChanged: (value) {
-                      user.fullName = value;
-                    },
-                    )
-                    ),
+                //     TextFieldContainer(
+                //         key: Key("name"),
+                // child: TextFormField(
+                //   controller: _userNameController,
+                //       validator: (name){
+                //     print("validation name ${name}");
+                //       if(user.fullName == null ||user.fullName.length <3){
+                //         return "Enter a valid user name";
+                //       }else{
+                //         return null;
+                //       }
+                //       },
+                //       decoration: const InputDecoration(
+                //         prefixIcon: Icon(Icons.person),
+                //           labelText: 'Name',
+                //         errorText: "Enter you name",
+                //       ),
+                //       keyboardType: TextInputType.text,
+                //
+                //       //validator: validateName,
+                //     onChanged: (value) {
+                //       user.fullName = value;
+                //     },
+                //     )
+                //     ),
                     RoundedInputField(
                       key: const Key("username"),
                       hintText: "Your Name",

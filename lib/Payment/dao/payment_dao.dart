@@ -12,7 +12,8 @@ import 'package:uuid/uuid.dart';
 import 'package:intl/src/intl/date_format.dart';
 
 
-import '../../bean/Payment.dart';
+import '../../Payment/Payment.dart';
+import '../../auth/auth_dao.dart';
 
 
 
@@ -28,6 +29,7 @@ class PaymentDAO {
 
   Future<Payment> savePayment(Payment payment) async {
     print('Saving payment.');
+    await AuthDAO().getUID().then((value) => {payment.uid = value!},);
     try {
         FirebaseFirestore.instance
             .collection(Constant.PAYMENTS_COLLECTION_NAME)

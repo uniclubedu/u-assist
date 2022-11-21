@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:u_assist/Payment/dao/payment_dao.dart';
+import 'package:u_assist/auth/auth_dao.dart';
 import 'package:u_assist/util/Constant.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,7 +22,8 @@ class UserDao {
     var uuid = Uuid();
     final String userId = uuid.v4();
     user.memberId = userId;
-    var userJson;
+    await AuthDAO().getUID().then((value) => {user.uid = value!},);
+    var userJson = user.toJson();
     try {
       if(null == user.profileImage){
         saveMemberToDB(user, "", userJson);
