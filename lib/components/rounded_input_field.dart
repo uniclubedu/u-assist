@@ -6,6 +6,7 @@ class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
+  //var validator;
   const RoundedInputField({
     required Key key,
     required this.hintText,
@@ -18,7 +19,8 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
 
     key: Key("value19"),
-      child: TextField(
+      child: TextFormField(
+        //validator: ,
         onChanged: onChanged,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(

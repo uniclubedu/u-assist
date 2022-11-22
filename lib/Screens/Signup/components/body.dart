@@ -10,7 +10,7 @@ import 'package:u_assist/components/rounded_input_field.dart';
 import 'package:u_assist/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Body extends State<UserRegistration> {
+class Body extends State<MemberRegistration> {
 
   late String name;
   late String contactNumber;

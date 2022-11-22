@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
-import 'package:u_assist/Screens/Register/user.dart';
+import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/Screens/Signup/UserRegistration.dart';
 import 'package:u_assist/constants.dart' as constant;
 
@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildPage() {
-    loadUserData();
+    //loadUserData();
     final children = <Widget>[];
     for (Member user in usersList) {
       children.add(UserDetailsWidget(user));
@@ -93,23 +93,10 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Icon(Icons.arrow_back_ios, color: Colors.grey)),
+           // child: const Icon(Icons.arrow_back_ios, color: Colors.grey)
+        ),
         backgroundColor: Colors.purple,
         actions: [
-          MaterialButton(
-              onPressed: () {
-                Map<String, dynamic> filters = Map();
-                filters['isPaid'] = (isPaid) ? 1 : 0;
-                filters['isFree'] = (isFree) ? 1 : 0;
-                filters['Latest'] = (isLatest) ? 1 : 0;
-                filters['Old'] = (isOld) ? 1 : 0;
-                //filters['cat'] = (selected);
-                Navigator.pop(context, jsonEncode(filters));
-              },
-              child: Text(
-                "Apply",
-                style: TextStyle(color: Colors.white),
-              )),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
@@ -131,14 +118,16 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: 'nee',
             onPressed: () => setState(() {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserRegistration()));
+                  MaterialPageRoute(builder: (context) => MemberRegistration()));
             }),
             tooltip: 'Add Member',
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
+            heroTag: 'add button',
             onPressed: () => {
               showDialog(
                   context: context,
@@ -224,7 +213,7 @@ class _HomeState extends State<Home> {
                     itemCount: 5,
                     itemBuilder: (context, index) => const NewsCardSkelton(),
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding,width: 50,),
                   )
                 : ListView(
                     shrinkWrap: true,

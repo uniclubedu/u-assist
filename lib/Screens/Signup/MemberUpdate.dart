@@ -11,19 +11,25 @@ import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
 
-import '../../components/text_field_container.dart';
 import '../../constants.dart';
 import '../Util/NewsCardSkelton.dart';
 import '../Welcome/home.dart';
 
-class MemberRegistration extends StatefulWidget {
+// ignore: must_be_immutable
+class MemberUpdate extends StatefulWidget {
   //StreamController <UserBean>streamController;
   //UserRegistration(this.streamController);
+    late Member member;
+
   @override
-  _MemberRegistrationState createState() => _MemberRegistrationState();
+  _UserRegistrationState createState() => _UserRegistrationState();
+
+  MemberUpdate(Member member){
+    this.member = member;
+  }
 }
 
-class _MemberRegistrationState extends State<MemberRegistration> {
+class _UserRegistrationState extends State<MemberUpdate> {
   late String name;
   late String contactNumber;
   late String emailId;
@@ -31,39 +37,21 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   late String date;
   late File _userImageFile;
   late int shiftValue = 0;
-  late int selectedShift = 0;
+  late int selectedRadioTile = 0;
   late int selectedRadio = 0;
-  late int selectedMembership =0;
 
   late bool _isLoading;
-  late Member user = Member(fullName: '', mobileNumber: '', address: '', profileImageURL: '');
-
-  String? get _errorText {
-    final userName = _userNameController.value.text;
-    if (userName.isEmpty)
-      return 'Can\'t be empty';
-    if(userName.length <3){
-      return 'Too short';
-    }
-    return null;
-  }
+  late Member user = widget.member;
 
   @override
   void initState() {
     _isLoading = false;
     user.shift = "";
     selectedRadio = 0;
-    selectedShift = 0;
+    selectedRadioTile = 0;
     // TODO: implement initState
+
     super.initState();
-  }
-
-  TextEditingController _userNameController = TextEditingController();
-
-  @override
-  void dispose(){
-    _userNameController.dispose();
-    super.dispose();
   }
 
   final userDao = UserDao();
@@ -75,9 +63,9 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    onPrimary: Colors.white,
+    onPrimary: Colors.black87,
+    primary: Colors.grey[300],
     minimumSize: Size(88, 36),
-    primary: Colors.purple,
     padding: EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -86,14 +74,14 @@ class _MemberRegistrationState extends State<MemberRegistration> {
 
   setSelectedRadioTile(var val) {
     setState(() {
-      selectedShift = val;
+      selectedRadioTile = val;
       user.shift = val.toString();
     });
   }
 
   DateTime selectedDate = DateTime.now();
 
-  Future<void> _selectDate(BuildContext context, bool isStartDate, bool isEndDate) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -102,30 +90,17 @@ class _MemberRegistrationState extends State<MemberRegistration> {
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
       setState(() {
-        if(isStartDate){
-          user.membershipStartDate = formatter.format(picked);
-        }else if(isEndDate){
-          user.membershipEndDate = formatter.format(picked);
-        }
+        user.joiningDate = formatter.format(picked);
       });
     }
   }
 
-  registerUser(Member user) async {
-    print("Saving object to the data base");
-    Member userObj = Member(
-        fullName: user.fullName,
-        mobileNumber: user.mobileNumber,
-        address: user.address,
-        profileImage: user.profileImage,
-        profileImageURL: '',
-        fees: user.fees,
-        shift: user.shift,
-        membershipStartDate: user.membershipStartDate,
-        membershipEndDate: user.membershipEndDate,
-        joiningDate: this.user.joiningDate, memberId: '');
-    await userDao.saveUser(userObj);
+  updateUser(Member user) async {
+    print("Updating object to the data base");
+    await userDao.updateUser(user);
+    stdout.writeln("User updated successfully ");
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -152,41 +127,16 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                //     TextFieldContainer(
-                //         key: Key("name"),
-                // child: TextFormField(
-                //   controller: _userNameController,
-                //       validator: (name){
-                //     print("validation name ${name}");
-                //       if(user.fullName == null ||user.fullName.length <3){
-                //         return "Enter a valid user name";
-                //       }else{
-                //         return null;
-                //       }
-                //       },
-                //       decoration: const InputDecoration(
-                //         prefixIcon: Icon(Icons.person),
-                //           labelText: 'Name',
-                //         errorText: "Enter you name",
-                //       ),
-                //       keyboardType: TextInputType.text,
-                //
-                //       //validator: validateName,
-                //     onChanged: (value) {
-                //       user.fullName = value;
-                //     },
-                //     )
-                //     ),
                     RoundedInputField(
                       key: const Key("username"),
-                      hintText: "Your Name",
+                      hintText: widget.member.fullName,
                       onChanged: (value) {
                         user.fullName = value;
                       },
                     ),
                     RoundedInputField(
                       key: const Key("mobile"),
-                      hintText: "Contact Number",
+                      hintText: widget.member.mobileNumber,
                       icon: Icons.phone,
                       onChanged: (value) {
                         this.user.mobileNumber = value;
@@ -194,7 +144,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                     ),
                     RoundedInputField(
                       key: const Key("fees"),
-                      hintText: "Fees",
+                      hintText: widget.member.fees,
                       icon: Icons.account_balance_wallet,
                       onChanged: (value) {
                         this.user.fees = value;
@@ -202,29 +152,21 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                     ),
                     RoundedInputField(
                       key: const Key("address"),
-                      hintText: "Full Address",
+                      hintText: widget.member.address,
                       icon: Icons.account_box_sharp,
                       onChanged: (value) {
                         user.address = value;
                       },
                     ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 250, 0),
-                      child: Text(
-                        'SHIFT',
-                        style: TextStyle(
-                            color: Colors.purple,
-                          fontWeight: FontWeight.w800,
-                          fontFamily: 'Roboto',
-                          letterSpacing: 0.5,
-                          fontSize: 20,
-                        )
-                      ),
+                    Text(
+                      'Shift',
+                      style: TextStyle(),
                     ),
                     RadioListTile(
                         value: 1,
-                        groupValue: selectedShift,
+                        groupValue: selectedRadioTile,
                         title: Text("Full Time"),
+                        subtitle: Text("7 AM to 10 PM"),
                         onChanged: (val) {
                           print("Radio Tile pressed $val");
                           setSelectedRadioTile(val);
@@ -233,8 +175,9 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                         selected: true),
                     RadioListTile(
                       value: 2,
-                      groupValue: selectedShift,
+                      groupValue: selectedRadioTile,
                       title: Text("Morning"),
+                      subtitle: Text("7 AM to 2 PM"),
                       onChanged: (val) {
                         print("Radio Tile pressed $val");
                         setSelectedRadioTile(val);
@@ -243,65 +186,24 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                     ),
                     RadioListTile(
                       value: 3,
-                      groupValue: selectedShift,
+                      groupValue: selectedRadioTile,
                       title: Text("Evening"),
+                      subtitle: Text("2 PM to 10 PM"),
                       onChanged: (val) {
                         print("Radio Tile pressed $val");
                         setSelectedRadioTile(val);
                       },
                       activeColor: Colors.red,
                     ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 200, 0),
-                      child: Text(
-                          'MEMBERSHIP',
-                          style: TextStyle(
-                            color: Colors.purple,
-                            fontWeight: FontWeight.w800,
-                            fontFamily: 'Roboto',
-                            letterSpacing: 0.5,
-                            fontSize: 20,
-                          )
-                      ),
-                    ),
-                    RadioListTile(
-                        value: 100 ,
-                        groupValue: selectedMembership,
-                        title: Text("Monthly"),
-                        onChanged: (membership){
-                          print("membership selected ${membership}");
-                          setMembership(membership);
-                        }
-                    ),
-                    RadioListTile(
-                        value: 101,
-                        groupValue: selectedMembership,
-                        title: Text("Quarterly"),
-                        onChanged: (membership){
-                          print("membership selected ${membership}");
-                          setMembership(membership);
-                        }
-                    ),
                     ElevatedButton(
                       style: raisedButtonStyle,
                       child: Container(
-                        child: this.user.membershipStartDate == null
-                            ? Text('Membership Start Date')
-                            : Text(this.user.membershipStartDate!),
+                        child: this.user.joiningDate == null
+                            ? Text('Joining Date')
+                            : Text(this.user.joiningDate!),
                       ),
                       onPressed: () {
-                        _selectDate(context,true,false);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: raisedButtonStyle,
-                      child: Container(
-                        child: this.user.membershipEndDate == null
-                            ? Text('Membership End Date')
-                            : Text(this.user.membershipEndDate!),
-                      ),
-                      onPressed: () {
-                        _selectDate(context,false,true);
+                        _selectDate(context);
                       },
                     ),
                     UserImagePicker(_pickedImageTest),
@@ -311,19 +213,13 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       press: () async {
                         _isLoading = true;
                         print(this.user.toJson());
-                        await registerUser(this.user);
+                        await updateUser(this.user);
                         _isLoading = false;
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (context) => Home()),
-                                (route) => false);
+                            (route) => false);
                       },
-
-
-
-
-
-
                     ),
                     SizedBox(height: size.height * 0.03),
                   ],
@@ -331,13 +227,5 @@ class _MemberRegistrationState extends State<MemberRegistration> {
               ),
       ),
     );
-  }
-
-  void setMembership(var membership) {
-    setState(() {
-      selectedMembership = membership;
-      selectedMembership = membership;
-      user.membership = membership.toString();
-    });
   }
 }
