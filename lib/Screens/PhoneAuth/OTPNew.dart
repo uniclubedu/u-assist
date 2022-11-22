@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:u_assist/Screens/Register/dao/client_dao.dart';
+import 'package:u_assist/Screens/dashboard/ContactAdmin.dart';
 
 import '../../components/rounded_button.dart';
 import '../Welcome/home.dart';
@@ -47,10 +49,17 @@ class PinPutViewState extends State<PinPutView>{
             if (value.user != null) {
               print("user value ");
               print(value.user);
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                      (route) => false);
+              if(await ClientDAO().isAccountActivated()){
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                        (route) => false);
+              }else{
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => ContactAdmin()),
+                        (route) => false);
+              }
             }
           });
         },
@@ -209,94 +218,8 @@ class PinPutViewState extends State<PinPutView>{
         ),
       ),
     );
-    // return Scaffold(
-    //     appBar: AppBar(
-    //       title: Text("OTP Verification"),
-    //       centerTitle: true,
-    //     ),
-    //     body: Column(children: [
-    //       Expanded(child: Container(
-    //         margin: EdgeInsets.only(top: 40),
-    //         child: Center(
-    //           child: Text(
-    //             'Verify +91-${widget.phone}',
-    //             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-    //           ),
-    //         ),
-    //       )),
-    //       Expanded(child: Container(
-    //         height: MediaQuery.of(context).size.height,
-    //         width: MediaQuery.of(context).size.width,
-    //         child: Column(
-    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //             children: [
-    //               Expanded(child: darkRoundedPinPut()),
-    //               Expanded(child: animatedBorders())
-    //             ]),
-    //       )),
-    //
-    //     ],));
+
   }
-  // Widget darkRoundedPinPut() {
-  //   return Pinput(
-  //     eachFieldWidth: 50.0,
-  //     eachFieldHeight: 50.0,
-  //     withCursor: true,
-  //     fieldsCount: 6,
-  //     controller: _pinPutController,
-  //     eachFieldMargin: EdgeInsets.symmetric(horizontal: 5),
-  //     onSubmit: (String pin) => _showSnackBar(pin),
-  //     submittedFieldDecoration: BoxDecoration(
-  //       color: Colors.green[800],
-  //       borderRadius: BorderRadius.circular(15.0),
-  //     ),
-  //     selectedFieldDecoration: BoxDecoration(
-  //       color: Colors.green[800],
-  //       borderRadius: BorderRadius.circular(15.0),
-  //     ),
-  //     followingFieldDecoration: BoxDecoration(
-  //       color: Colors.green[800],
-  //       borderRadius: BorderRadius.circular(15.0),
-  //     ),
-  //     pinAnimationType: PinAnimationType.rotation,
-  //     textStyle: TextStyle(color: Colors.white,
-  //         fontSize: 20.0,
-  //         height: 1),
-  //   );
-  // }
-  //
-  // Widget animatedBorders() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: PinPut(
-  //       fieldsCount: 4,
-  //       eachFieldHeight: 50.0,
-  //       withCursor: true,
-  //       onSubmit: (String pin) => _showSnackBar(pin),
-  //       controller: _pinPutController2,
-  //       submittedFieldDecoration: BoxDecoration(
-  //         border: Border.all(color: Colors.black),
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ).copyWith(
-  //         borderRadius: BorderRadius.circular(20.0),
-  //       ),
-  //       selectedFieldDecoration: BoxDecoration(
-  //         color: Colors.green,
-  //         border: Border.all(color: Colors.black),
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ),
-  //       followingFieldDecoration: BoxDecoration(
-  //         border: Border.all(color: Colors.black),
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ).copyWith(
-  //         borderRadius: BorderRadius.circular(5.0),
-  //         border: Border.all(
-  //           color: Colors.black,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   void _showSnackBar(String pin) {
     final snackBar = SnackBar(
@@ -329,10 +252,18 @@ class PinPutViewState extends State<PinPutView>{
           verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-                  (route) => false);
+          print("checking if user is activated");
+          if(await ClientDAO().isAccountActivated()){
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+                    (route) => false);
+          }else{
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => ContactAdmin()),
+                    (route) => false);
+          }
         }
       });
     } catch (stacktrace, e) {

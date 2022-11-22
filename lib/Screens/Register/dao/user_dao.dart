@@ -13,8 +13,6 @@ import 'package:uuid/uuid.dart';
 import '../member.dart';
 
 class UserDao {
-  final DatabaseReference _userRef =
-      FirebaseDatabase.instance.reference().child('user');
   PaymentDAO paymentDAO = PaymentDAO();
 
   Future<Member> saveUser(Member user) async {
@@ -22,7 +20,8 @@ class UserDao {
     var uuid = Uuid();
     final String userId = uuid.v4();
     user.memberId = userId;
-    await AuthDAO().getUID().then((value) => {user.uid = value!},);
+    await AuthDAO().getUID().then((value) => {user.uid =
+    value==null?"":value},);
     var userJson = user.toJson();
     try {
       if(null == user.profileImage){
@@ -122,7 +121,7 @@ class UserDao {
     try {
       // Get docs from collection reference
       QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('uassist_user').get();
+          await FirebaseFirestore.instance.collection(Constant.USER_COLLECTION_NAME).get();
       // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       //for a specific field

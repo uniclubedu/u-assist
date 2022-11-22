@@ -46,7 +46,10 @@ class _MemberProfile extends State<MemberProfile> {
           title: const Text("Member Profile"),
           leading: MaterialButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                        (route) => false);
               },
               child: const Icon(Icons.arrow_back_ios, color: Colors.white)),
           backgroundColor: Colors.purple,

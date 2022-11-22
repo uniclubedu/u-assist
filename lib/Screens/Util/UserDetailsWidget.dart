@@ -84,21 +84,55 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
 
             ),
           ),
+          Column(
+            children: [
+              if(widget.user.profileImageURL != null && widget.user.profileImageURL != '')
+                Container(
+                    padding: const EdgeInsets.fromLTRB(80,10, 0, 0),
+                    child: CircleAvatar(radius: 40,
+                      backgroundImage:Image.network(widget.user.profileImageURL).image,
+                    )
+                )
+              else
+                Container(
+                    padding: const EdgeInsets.fromLTRB(80,10, 0, 0),
+                    child: CircleAvatar(radius: 40,
+                      backgroundImage:AssetImage("assets/images/profile.png"),
+                    )
+                ),
+              Container(
+                margin: EdgeInsets.only(bottom: 10, left: 80, top: 15),
+                child: Column(
+                  children: [
+                      if(widget.user.amountPaid < double.parse(widget.user.fees))
+                        Text(
+                          "Pending",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Open Sans',
+                            fontSize: 20,
 
-          if(widget.user.profileImageURL != null && widget.user.profileImageURL != '')
-            Container(
-                padding: const EdgeInsets.fromLTRB(80,10, 0, 20),
-                child: CircleAvatar(radius: 40,
-                  backgroundImage:Image.network(widget.user.profileImageURL).image,
-                )
-            )
-          else
-            Container(
-                padding: const EdgeInsets.fromLTRB(80,10, 0, 20),
-                child: CircleAvatar(radius: 40,
-                  backgroundImage:AssetImage("assets/images/profile.png"),
-                )
-            ),
+                          ),
+                        )
+                    else
+                        Text(
+                          "Paid",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Open Sans',
+                            fontSize: 20,
+
+                          ),
+                        )
+                  ],
+
+                ),
+              )
+            ],
+          )
+
 
         ],
       )
