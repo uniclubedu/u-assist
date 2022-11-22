@@ -2,6 +2,7 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:u_assist/Screens/Login/components/Login.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
 import 'package:u_assist/Screens/dashboard/UserDetails.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: LoginScreen(),
     );;
   }
 }

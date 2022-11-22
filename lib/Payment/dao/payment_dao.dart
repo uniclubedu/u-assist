@@ -43,9 +43,9 @@ class PaymentDAO {
   Future<double> getTotalEarningOfCurrentMonth() async {
     print("Getting total earning of current month");
     double totalEarning = 0.0;
-    String uid = "";
+    String? uid = "";
     await AuthDAO().getUID().then(
-          (value) => {uid = value!},
+          (value) => {uid = value},
         );
     try {
       DateTime now = DateTime.now();
@@ -114,8 +114,8 @@ class PaymentDAO {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection(Constant.PAYMENTS_COLLECTION_NAME)
           .where("memberId", isEqualTo: memberId)
-          .where("date", isGreaterThan: formatter.parse(membershipStartDate))
-          .where("date", isLessThan: formatter.parse(membershipEndDate))
+          .where("date", isGreaterThanOrEqualTo: formatter.parse(membershipStartDate))
+          .where("date", isLessThanOrEqualTo: formatter.parse(membershipEndDate))
           .get();
       // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();

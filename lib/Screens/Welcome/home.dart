@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   var phoneNumber = "9694879050";
   var image = "image";
   late List<Member> usersList = [];
+  late List<Member> tempList = [];
   final userDao = new UserDao();
   final paymentDao = PaymentDAO();
   late bool _isLoading = false;
@@ -39,9 +40,8 @@ class _HomeState extends State<Home> {
   StreamController<Member> userDataController =
       StreamController<Member>.broadcast();
 
-  var isFilter = false;
+  var isPaid = false;
   var isPending = false;
-  bool isPaid = false;
   bool isFree = false;
   bool isLatest = false;
   bool isOld = false;
@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
 
   Future<List<Member>> loadUserData() async {
     usersList = await userDao.getUserDetails();
+    tempList = usersList;
     totalEarning = await paymentDao.getTotalEarningOfCurrentMonth();
     setState(() {});
     return usersList;
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
     //loadUserData();
     final children = <Widget>[];
     children.add(ShowEarning(totalEarning));
-    for (Member user in usersList) {
+    for (Member user in tempList) {
       children.add(UserDetailsWidget(user));
     }
 
@@ -152,10 +153,10 @@ class _HomeState extends State<Home> {
                                     FilterChip(
                                       label: Text("Paid"),
                                       showCheckmark: false,
-                                      selected: isFilter,
+                                      selected: isPaid,
                                       onSelected: (bool value) {
                                         setState(() {
-                                          isFilter = !isFilter;
+                                          isPaid = !isPaid;
                                         });
                                       },
                                       selectedColor: Colors.orange,
@@ -183,11 +184,12 @@ class _HomeState extends State<Home> {
                                 )
                               ],
                             )),
-                        title: Text('Stateful Dialog'),
+                        title: Text('Filters'),
                         actions: <Widget>[
                           InkWell(
-                            child: Text('OK   '),
+                            child: Text('Apply'),
                             onTap: () {
+                              showPaidMembers(isPaid, isPending);
                               Navigator.of(context).pop();
                             },
                           ),
@@ -238,91 +240,33 @@ class _HomeState extends State<Home> {
 
   }
 
-  Widget buildFilterWidget() {
-    return Row(
-      children: [
-        Container(
-            child: FilterChip(
-          label: Text("Chip Unselected"),
-          selected: isFilter,
-          onSelected: (bool value) {
-            setState(() {
-              isFilter = !isFilter;
-            });
-          },
-          selectedColor: Colors.red,
-          labelStyle: TextStyle(color: Colors.white),
-          backgroundColor: Colors.blue,
-          checkmarkColor: Colors.white,
-          //showCheckmark: true,
-        )),
-      ],
-    );
+  void showPaidMembers(bool showPaid, bool showPending) {
+    print("calling show paid members");
+    print("show paid ${showPaid} and show pending ${showPending}");
+    if(showPaid && showPending){
+      tempList = usersList;
+      setState(() {
 
-  }
-
-  final List<String> _filters = <String>[];
-
-  Widget _buildPopupDialog(BuildContext context) {
-
-
-    var selected = [];
-    var paid = "Paid";
-    var pending = "pending";
-    bool _selected=false;
-    return AlertDialog(
-      title: const Text('Popup example'),
-      content: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: techChips(),
-      ),
-      actions: <Widget>[
-        OutlinedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
-        ),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.purple,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Apply'),
-        ),
-      ],
-    );
-  }
-  List<Widget> techChips () {
-    List<Tech> _chipsList = [
-      Tech("India", Colors.brown, false),
-      Tech("Canada", Colors.deepPurple, false),
-    ];
-    List<Widget> chips = [];
-    for (int i=0; i< _chipsList.length; i++) {
-      Widget item = Padding(
-        padding: const EdgeInsets.only(left:10, right: 5),
-        child: FilterChip(
-          showCheckmark: _chipsList[i].isSelected,
-          label: Text(_chipsList[i].label),
-          labelStyle: TextStyle(color: Colors.white),
-          backgroundColor: _chipsList[i].color,
-          selected: _chipsList[i].isSelected,
-          onSelected: (bool value)
-          {
-            setState(() {
-              _chipsList[i].isSelected = value;
-            });
-          },
-        ),
-      );
-      chips.add(item);
+      });
+      return;
     }
-    return chips;
+    if(showPaid){
+      print("Only paid");
+      tempList = usersList.where((member) => member.amountPaid>= double.parse(member.fees))
+          .toList();
+      print(usersList);
+    }
+    if(showPending){
+      print("only pending");
+      tempList = usersList.where((member) => member.amountPaid < double.parse(member.fees))
+          .toList();
+      print(usersList);
+    }
+    setState(() {
+
+    });
   }
+
 }
 class Tech
 {
