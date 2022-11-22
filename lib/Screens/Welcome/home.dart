@@ -4,9 +4,11 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:u_assist/Payment/dao/payment_dao.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
 import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/Screens/Signup/UserRegistration.dart';
+import 'package:u_assist/Screens/dashboard/ShowEarning.dart';
 import 'package:u_assist/constants.dart' as constant;
 
 import '../../constants.dart';
@@ -27,8 +29,9 @@ class _HomeState extends State<Home> {
   var image = "image";
   late List<Member> usersList = [];
   final userDao = new UserDao();
-
+  final paymentDao = PaymentDAO();
   late bool _isLoading = false;
+  var totalEarning;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
@@ -69,6 +72,7 @@ class _HomeState extends State<Home> {
 
   Future<List<Member>> loadUserData() async {
     usersList = await userDao.getUserDetails();
+    totalEarning = await paymentDao.getTotalEarningOfCurrentMonth();
     setState(() {});
     return usersList;
   }
@@ -81,6 +85,7 @@ class _HomeState extends State<Home> {
   Widget _buildPage() {
     //loadUserData();
     final children = <Widget>[];
+    children.add(ShowEarning(totalEarning));
     for (Member user in usersList) {
       children.add(UserDetailsWidget(user));
     }
