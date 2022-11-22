@@ -106,7 +106,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Member "),
+        title: const Text("Update Member "),
         leading: MaterialButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -209,7 +209,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
                     UserImagePicker(_pickedImageTest),
                     RoundedButton(
                       key: const Key("value11"),
-                      text: "Add Member",
+                      text: "Update",
                       press: () async {
                         _isLoading = true;
                         print(this.user.toJson());
