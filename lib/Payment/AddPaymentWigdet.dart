@@ -164,11 +164,12 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
                   _isLoading = true;
                   await savePayment();
                   _isLoading = false;
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MemberProfile(widget.member)),
-                      (route) => false);
+                  Navigator.of(context).pop();
+                  // Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => MemberProfile(widget.member)),
+                  //     (route) => false);
                 },
               ),
 

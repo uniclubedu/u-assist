@@ -1,15 +1,16 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:u_assist/Screens/Welcome/home.dart';
 import 'package:u_assist/Payment/AddPaymentWigdet.dart';
 import 'package:u_assist/Payment/PaymentHistory.dart';
+import 'package:u_assist/Screens/Welcome/home.dart';
+
 import 'Register/dao/user_dao.dart';
 import 'Register/member.dart';
 import 'Signup/MemberUpdate.dart';
 
-
 class MemberProfile extends StatefulWidget {
-   Member member;
+  Member member;
 
   @override
   State<MemberProfile> createState() => _MemberProfile();
@@ -20,6 +21,7 @@ class MemberProfile extends StatefulWidget {
 class _MemberProfile extends State<MemberProfile> {
   static const IconData delete = IconData(0xe1b9, fontFamily: 'MaterialIcons');
   final userDao = new UserDao();
+
   //static const IconData edit = IconData(0xe89b, fontFamily: 'MaterialIcons');
 
   Image image = Image.asset("assets/images/profile.png");
@@ -30,7 +32,7 @@ class _MemberProfile extends State<MemberProfile> {
 
   Future<void> deleteMember() async {
     stdout.writeln("delete member");
-    Future<void> future =  userDao.deleteUser(widget.member);
+    Future<void> future = userDao.deleteUser(widget.member);
     setState(() {});
     return future;
   }
@@ -59,18 +61,27 @@ class _MemberProfile extends State<MemberProfile> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                Image.network(widget.member.profileImageURL)
-                                    .image,
-                          )),
+                      if (null != widget.member.profileImageURL &&
+                          !widget.member.profileImageURL.isEmpty)
+                        Container(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  Image.network(widget.member.profileImageURL)
+                                      .image,
+                            ))
+                      else
+                        Container(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  AssetImage("assets/images/profile.png"),
+                            )),
                       SizedBox(
                         //width: 150,
                         child: Container(
-
                           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,9 +157,12 @@ class _MemberProfile extends State<MemberProfile> {
                             ),
                             GestureDetector(
                               onTap: () => setState(() {
-                                  deleteMember().then((value) => setState((){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-                                  }));
+                                deleteMember().then((value) => setState(() {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    }));
                               }),
                               child: Container(
                                 padding:
@@ -185,8 +199,8 @@ class _MemberProfile extends State<MemberProfile> {
                           child: Column(
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(right:50),
-                                child:  Text(
+                                padding: const EdgeInsets.only(right: 50),
+                                child: Text(
                                   'Payments',
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.black),
@@ -199,19 +213,25 @@ class _MemberProfile extends State<MemberProfile> {
                                     TextButton.icon(
                                       // <-- ElevatedButton
                                       onPressed: () {
-
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistory(widget.member)));
-
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PaymentHistory(
+                                                        widget.member)));
                                       },
-                                      style: TextButton.styleFrom(primary: Colors.purple),
-                                      icon: Text('Payment History', style: TextStyle( fontSize: 15)),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.purple),
+                                      icon: Text('Payment History',
+                                          style: TextStyle(fontSize: 15)),
                                       label: Padding(
-                                          child: Icon(
-                                            Icons.keyboard_arrow_right_outlined,
-                                            size: 24.0,
-                                          ), padding: const EdgeInsets.only(left: 190),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_right_outlined,
+                                          size: 24.0,
+                                        ),
+                                        padding:
+                                            const EdgeInsets.only(left: 190),
                                       ),
-
                                     ),
                                   ],
                                 ),
@@ -224,17 +244,24 @@ class _MemberProfile extends State<MemberProfile> {
                                       onPressed: () {
                                         print("member profile hello");
                                         print(widget.member.toJson());
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddPaymentWigdet(widget.member)));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddPaymentWigdet(
+                                                        widget.member)));
                                       },
-                                      style: TextButton.styleFrom(primary: Colors.purple),
-                                      icon: Text('Add Payment', style: TextStyle( fontSize: 15)),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.purple),
+                                      icon: Text('Add Payment',
+                                          style: TextStyle(fontSize: 15)),
                                       label: const Padding(
                                         child: Icon(
                                           Icons.add,
                                           size: 20.0,
-                                        ), padding: EdgeInsets.only(left: 210),
+                                        ),
+                                        padding: EdgeInsets.only(left: 210),
                                       ),
-
                                     ),
                                   ],
                                 ),

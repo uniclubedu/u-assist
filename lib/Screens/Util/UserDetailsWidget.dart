@@ -92,6 +92,14 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
                   backgroundImage:Image.network(widget.user.profileImageURL).image,
                 )
             )
+          else
+            Container(
+                padding: const EdgeInsets.fromLTRB(80,10, 0, 20),
+                child: CircleAvatar(radius: 40,
+                  backgroundImage:AssetImage("assets/images/profile.png"),
+                )
+            ),
+
         ],
       )
     ),

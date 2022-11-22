@@ -90,10 +90,7 @@ class PaymentDAO {
       print("payment data $allData");
       for (var payment in allData) {
         Type type = payment.runtimeType;
-
-        Map<String, dynamic> data = jsonDecode(jsonEncode(payment));
-        print(data.toString());
-        Payment paymentObj = Payment.fromJson(data);
+        Payment paymentObj = Payment.fromJson(payment as Map<String, dynamic>);
         paymentsData.add(paymentObj);
       }
       return paymentsData;
