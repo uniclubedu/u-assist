@@ -132,6 +132,17 @@ class _MemberProfile extends State<MemberProfile> {
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
+                              const Divider(),
+                              Text(
+                                "Pending : ${(int.parse(widget.member.fees) - widget.member.amountPaid).toInt()}",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Open Sans',
+                                  fontSize: 12,
+
+                                ),
+                              )
                               // Text(" details"),
                             ],
                           ),

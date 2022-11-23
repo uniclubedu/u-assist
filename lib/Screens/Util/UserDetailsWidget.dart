@@ -101,17 +101,17 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
                     )
                 ),
               Container(
-                margin: EdgeInsets.only(bottom: 10, left: 80, top: 15),
+                margin: EdgeInsets.only(bottom: 10, left: 60, top: 15),
                 child: Column(
                   children: [
                       if(widget.user.amountPaid < double.parse(widget.user.fees))
                         Text(
-                          "Pending",
+                          "Pending ${(int.parse(widget.user.fees) - widget.user.amountPaid).toInt()}",
                           style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Open Sans',
-                            fontSize: 20,
+                            fontSize: 10,
 
                           ),
                         )

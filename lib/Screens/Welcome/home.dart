@@ -12,6 +12,8 @@ import 'package:u_assist/Screens/dashboard/ShowEarning.dart';
 import 'package:u_assist/constants.dart' as constant;
 
 import '../../constants.dart';
+import '../../notification/SMSNotification.dart';
+import '../../util/SMSNotificationTemplate.dart';
 import '../Register/dao/user_dao.dart';
 import '../Util/NewsCardSkelton.dart';
 import '../Util/UserDetailsWidget.dart';
@@ -36,6 +38,7 @@ class _HomeState extends State<Home> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   StreamController<Member> userDataController =
       StreamController<Member>.broadcast();
@@ -72,7 +75,7 @@ class _HomeState extends State<Home> {
 
   Future<List<Member>> loadUserData() async {
     usersList = await userDao.getUserDetails();
-    tempList = usersList;
+    tempList = List.from(usersList);
     totalEarning = await paymentDao.getTotalEarningOfCurrentMonth();
     setState(() {});
     return usersList;
@@ -87,6 +90,7 @@ class _HomeState extends State<Home> {
     //loadUserData();
     final children = <Widget>[];
     children.add(ShowEarning(totalEarning));
+    children.add(buildSearchWidget());
     for (Member user in tempList) {
       children.add(UserDetailsWidget(user));
     }
@@ -104,6 +108,12 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.purple,
         actions: [
           IconButton(
+            icon: Icon(Icons.notifications_active),
+            onPressed: () async {
+              sendPaymentNotification();
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
@@ -115,6 +125,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
+
 
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -240,6 +251,36 @@ class _HomeState extends State<Home> {
 
   }
 
+  Widget buildSearchWidget(){
+    return new Container(
+      color: Theme.of(context).primaryColor,
+      margin: const EdgeInsets.all(5.0),
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Card(
+          child: ListTile(
+            leading: Icon(Icons.search),
+            title: TextField(
+              controller: searchController,
+              decoration: new InputDecoration(
+                hintText: 'Search Member',
+                border: InputBorder.none
+              ),
+              onChanged: onSearchTextChanged,
+            ),
+            trailing: new IconButton(
+                onPressed: (){
+                  searchController.clear();
+                  onSearchTextChanged('');
+                },
+                icon: Icon(Icons.cancel),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void showPaidMembers(bool showPaid, bool showPending) {
     print("calling show paid members");
     print("show paid ${showPaid} and show pending ${showPending}");
@@ -267,7 +308,85 @@ class _HomeState extends State<Home> {
     });
   }
 
+  onSearchTextChanged(String text) async {
+    print("search text ${text}");
+    if(text.isEmpty){
+      tempList = List.of(usersList);
+      setState(() {});
+      return;
+    }
+    tempList.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+    print(usersList);
+    usersList.forEach((userDetail) {
+      if (userDetail.fullName.contains(text) )
+        tempList.add(userDetail);
+    });
+    setState(() {});
+  }
+
+  void sendPaymentNotification() {
+    print("Sending notification to pending fees members.");
+    var smsNotification = SMSNotification();
+    SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();
+    for(Member member in usersList){
+      if(member.amountPaid < double.parse(member.fees)){
+        if(member.mobileNumber != null && !member.mobileNumber.isEmpty){
+          smsTemplate.message = "Hi, Sir/Mam an amount of Rs${(int.parse(member.fees) - member.amountPaid).toInt()} is pending. Please make the payment today.";
+          smsTemplate.recipents.add(member.mobileNumber);
+          //smsNotification.sending_SMS(smsTemplate.message, smsTemplate.recipents);
+        }
+      }
+    }
+    showPaymentNotificationDialog();
+  }
+
+  void showPaymentNotificationDialog(){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              content: Form(
+                  key: _formKey,
+                  child:   Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: Text("Pending papyment notification has been sent successfully",
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize:20,
+                            color: Colors.indigo,
+                            fontWeight: FontWeight.normal
+                        ),
+                      )
+                  ),),
+              title: Text('Payment Notification'),
+              actions: <Widget>[
+                InkWell(
+                  child: Container(
+                    margin: const EdgeInsets.only(right:20, bottom: 5),
+                    child: Text('Ok', style: TextStyle(
+                        fontSize:20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal
+                    )),
+                  ),
+                  onTap: () {
+                    showPaidMembers(isPaid, isPending);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+        });
+  }
 }
+
 class Tech
 {
   String label;

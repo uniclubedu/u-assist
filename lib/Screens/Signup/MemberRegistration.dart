@@ -42,7 +42,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   late Member user = Member(fullName: '', mobileNumber: '', address: '', profileImageURL: '');
 
   String? get _errorText {
-    final userName = _userNameController.value.text;
+    final userName = _feesController.value.text;
     if (userName.isEmpty)
       return 'Can\'t be empty';
     if(userName.length <3){
@@ -61,11 +61,11 @@ class _MemberRegistrationState extends State<MemberRegistration> {
     super.initState();
   }
 
-  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _feesController = TextEditingController();
 
   @override
   void dispose(){
-    _userNameController.dispose();
+    _feesController.dispose();
     super.dispose();
   }
 
@@ -192,6 +192,9 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       hintText: "Your Name",
                       onChanged: (value) {
                         user.fullName = value;
+                        setState(() {
+
+                        });
                       },
                     ),
                     RoundedInputField(
@@ -200,16 +203,40 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       icon: Icons.phone,
                       onChanged: (value) {
                         this.user.mobileNumber = value;
+                        setState(() {
+
+                        });
                       },
                     ),
-                    RoundedInputField(
-                      key: const Key("fees"),
-                      hintText: "Fees",
-                      icon: Icons.account_balance_wallet,
-                      onChanged: (value) {
-                        this.user.fees = value;
-                      },
-                    ),
+                        TextFieldContainer(
+                            key: Key("Fees"),
+                    child: TextFormField(
+                      controller: _feesController,
+                          validator: (name){
+                        print("user feesss =============${user.fees}");
+                          if(user.fees == null ||user.fees.length <=0){
+                            return "Enter a valid user name";
+                          }else{
+                            return null;
+                          }
+                          },
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.currency_rupee, color: kPrimaryColor,),
+                              labelText: 'Fees',
+                            //errorText: "Enter valid fees",
+                            border: InputBorder.none,
+                          ),
+
+                          keyboardType: TextInputType.text,
+                          //validator: validateName,
+                        onChanged: (value) {
+                          user.fees = value;
+                          setState(() {
+
+                          });
+                        },
+                        )
+                        ),
                     RoundedInputField(
                       key: const Key("address"),
                       hintText: "Full Address",
@@ -315,26 +342,39 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       },
                     ),
                     UserImagePicker(_pickedImageTest),
-                    RoundedButton(
-                      key: const Key("value11"),
-                      text: "Add Member",
-                      press: () async {
-                        _isLoading = true;
-                        print(this.user.toJson());
-                        await registerUser(this.user);
-                        _isLoading = false;
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => Home()),
-                                (route) => false);
-                      },
-
-
-
-
-
-
-                    ),
+                    if((null != user.fullName &&  !user.fullName.isEmpty) && (null != user.mobileNumber && !user.mobileNumber.isEmpty) && (null != user.fees && !user.fees.toString().isEmpty && int.parse(user.fees,onError: (val)=>0)>0))
+                      ElevatedButton(
+                        key: const Key("value88"),
+                        child: Text("Add Member"),
+                        onPressed:  () async {
+                          _isLoading = true;
+                          print(this.user.toJson());
+                          await registerUser(this.user);
+                          _isLoading = false;
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Home()),
+                                  (route) => false);
+                        },
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                              textStyle: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold))
+                      )
+                    else
+                      ElevatedButton(
+                        key: const Key("value11"),
+                        child: Text("Add Member "),
+                        onPressed: null,
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.purple,
+                              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                              textStyle: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold))
+                      ),
                     SizedBox(height: size.height * 0.03),
                   ],
                 ),
