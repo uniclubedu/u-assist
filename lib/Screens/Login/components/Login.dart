@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/background.dart';
-import 'package:u_assist/Screens/Signup/UserRegistration.dart';
+import 'package:u_assist/Screens/Signup/MemberRegistration.dart';
 import 'package:u_assist/Screens/Welcome/Start.dart';
 import 'package:u_assist/components/already_have_an_account_acheck.dart';
 import 'package:u_assist/components/rounded_button.dart';

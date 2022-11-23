@@ -10,6 +10,9 @@ import 'package:u_assist/Screens/Signup/components/background.dart';
 import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
+import 'package:u_assist/notification/SMSNotification.dart';
+import 'package:u_assist/util/Constant.dart';
+import 'package:u_assist/util/SMSNotificationTemplate.dart';
 
 import '../../components/text_field_container.dart';
 import '../../constants.dart';
@@ -125,6 +128,13 @@ class _MemberRegistrationState extends State<MemberRegistration> {
         membershipEndDate: user.membershipEndDate,
         joiningDate: this.user.joiningDate, memberId: '');
     await userDao.saveUser(userObj);
+    if(user.mobileNumber != null && !user.mobileNumber.isEmpty){
+      var smsNotification = SMSNotification();
+      SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();
+      smsTemplate.message = Constant.REGISTRATION_MESSAGE1;
+      smsTemplate.recipents.add(user.mobileNumber);
+      smsNotification.sending_SMS(smsTemplate.message, smsTemplate.recipents);
+    }
   }
   @override
   Widget build(BuildContext context) {

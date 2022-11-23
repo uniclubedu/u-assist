@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:u_assist/Payment/dao/payment_dao.dart';
 import 'package:u_assist/Screens/PhoneAuth/login.dart';
 import 'package:u_assist/Screens/Register/member.dart';
-import 'package:u_assist/Screens/Signup/UserRegistration.dart';
+import 'package:u_assist/Screens/Signup/MemberRegistration.dart';
 import 'package:u_assist/Screens/dashboard/ShowEarning.dart';
 import 'package:u_assist/constants.dart' as constant;
 

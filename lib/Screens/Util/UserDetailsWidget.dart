@@ -4,7 +4,7 @@ import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/Screens/dashboard/UserDetails.dart';
 import 'package:u_assist/Screens/MemberProfile.dart';
 
-import '../Signup/UserRegistration.dart';
+import '../Signup/MemberRegistration.dart';
 
 class UserDetailsWidget extends StatefulWidget{
 

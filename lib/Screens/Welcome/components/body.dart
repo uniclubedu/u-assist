@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/Login.dart';
 import 'package:u_assist/Screens/Login/components/Login.dart';
-import 'package:u_assist/Screens/Signup/UserRegistration.dart';
+import 'package:u_assist/Screens/Signup/MemberRegistration.dart';
 import 'package:u_assist/Screens/Welcome/components/background.dart';
 import 'package:u_assist/components/rounded_button.dart';
 import 'package:u_assist/constants.dart';
