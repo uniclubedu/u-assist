@@ -32,13 +32,12 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0,0),
-      height: 150,
+      height: 180,
       width: 280,
       //padding: const EdgeInsets.all(26),
       child: InkWell(
           onTap: (){
-            print("user details widget");
-            print(widget.user.toJson());
+            debugPrint("user details widget");
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => MemberProfile(widget.user)));
             // Navigator.pushAndRemoveUntil(
@@ -63,7 +62,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
                     padding: const EdgeInsets.fromLTRB(0,0, 80,0),
                     child:  Text('${widget.user.fullName} ',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.black
                       ),
 

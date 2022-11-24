@@ -6,5 +6,5 @@ class Constant{
   static const String ACTIVE_STATUS = "ACTIVE";
   static const String BLOCKED_STATUS = "BLOCKED";
   static const String REGISTRATION_MESSAGE1 = "Your registration with Uniclub"
-      " completed successfully.";
+      " completed successfully.\nRegards\nUniclub Admin";
 }

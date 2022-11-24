@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:u_assist/Screens/PhoneAuth/otp.dart';
 
 import '../../components/rounded_button.dart';
 import 'OTPNew.dart';

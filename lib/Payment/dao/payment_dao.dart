@@ -21,7 +21,7 @@ class PaymentDAO {
   Payment get paymentObj => paymentObj;
 
   Future<Payment> savePayment(Payment payment) async {
-    print('Saving payment.');
+    debugPrint('Saving payment.');
     await AuthDAO().getUID().then(
           (value) => {payment.uid = value!},
         );
@@ -29,19 +29,19 @@ class PaymentDAO {
       FirebaseFirestore.instance
           .collection(Constant.PAYMENTS_COLLECTION_NAME)
           .add(payment.toJson())
-          .then((value) => print("Added "
+          .then((value) => debugPrint("Added "
               "payment ${payment.toJson()}"))
-          .catchError((error) => print("Failed to add the payment: $error"));
+          .catchError((error) => debugPrint("Failed to add the payment: $error"));
       return payment;
     } catch (stacktrace, e) {
-      print(e);
-      print(stacktrace);
+      debugPrint(e as String?);
+      debugPrint(stacktrace as String?);
     }
     throw Exception("Payment is not saved");
   }
 
   Future<double> getTotalEarningOfCurrentMonth() async {
-    print("Getting total earning of current month");
+    debugPrint("Getting total earning of current month");
     double totalEarning = 0.0;
     String? uid = "";
     await AuthDAO().getUID().then(
@@ -61,22 +61,21 @@ class PaymentDAO {
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       for (var payment in allData) {
         // Map<String, dynamic> data = jsonDecode(jsonEncode(payment));
-        print(payment.runtimeType);
         Payment paymentObj = Payment.fromJson(payment as Map<String, dynamic>);
         totalEarning += paymentObj.amount;
-        print(" total earning ${totalEarning}");
+        debugPrint(" total earning ${totalEarning}");
       }
 
     } catch (e, stacktrace) {
-      print("Exception while getting total earning for uid ${uid} $e");
-      print(stacktrace);
+      debugPrint("Exception while getting total earning for uid ${uid} $e");
+      debugPrint(stacktrace as String?);
     }
 
     return totalEarning;
   }
 
   Future<List<Payment>> getPaymentDetails(String memberId) async {
-    print("Getting payment details");
+    debugPrint("Getting payment details");
     List<Payment> paymentsData = [];
     try {
       // Get docs from collection reference
@@ -87,7 +86,7 @@ class PaymentDAO {
       // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       //for a specific field
-      print("payment data $allData");
+      debugPrint("payment data $allData");
       for (var payment in allData) {
         Type type = payment.runtimeType;
         Payment paymentObj = Payment.fromJson(payment as Map<String, dynamic>);
@@ -95,8 +94,8 @@ class PaymentDAO {
       }
       return paymentsData;
     } catch (e, stacktrace) {
-      print("Exception while getting user details $e");
-      print(stacktrace);
+      debugPrint("Exception while getting user details $e");
+      debugPrint(stacktrace as String?);
     }
 
     return paymentsData;
@@ -104,7 +103,7 @@ class PaymentDAO {
 
   Future<double> getPaymentAmount(String memberId, String membershipStartDate,
       String membershipEndDate) async {
-    print(
+    debugPrint(
         "Getting total payment of member ${memberId} and membership start ${membershipStartDate} and membership end ${membershipEndDate}");
     double totalPayment = 0;
     try {
@@ -120,18 +119,16 @@ class PaymentDAO {
       // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       //for a specific field
-      print("payment data $allData");
+      debugPrint("payment data $allData");
       for (var payment in allData) {
-        // Map<String, dynamic> data = jsonDecode(jsonEncode(payment));
-        print(payment.runtimeType);
         Payment paymentObj = Payment.fromJson(payment as Map<String, dynamic>);
         totalPayment += paymentObj.amount;
       }
-      print("total amoutn ${totalPayment}");
+      debugPrint("total amoutn ${totalPayment}");
       return totalPayment;
     } catch (e, stacktrace) {
-      print("Exception while getting user details $e");
-      print(stacktrace);
+      debugPrint("Exception while getting user details $e");
+      debugPrint(stacktrace as String?);
     }
     return totalPayment;
   }

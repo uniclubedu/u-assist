@@ -32,7 +32,7 @@ class _PaymentHistory extends State<PaymentHistory> {
   @override
   Future<void>? initState() {
     // TODO: implement initState
-    print("init state is getting called");
+    debugPrint("init state is getting called");
 
     _isLoading = true;
     //var constant;
@@ -40,12 +40,12 @@ class _PaymentHistory extends State<PaymentHistory> {
       loadPaymentData().then((value) =>
       {
         _isLoading = false,
-        print("value from loaddata init ${value}"),
+        debugPrint("value from loaddata init ${value}"),
       });
 
     });
     super.initState();
-    print("data has been loded");
+    debugPrint("data has been loded");
     return null;
   }
 
@@ -128,7 +128,7 @@ class _PaymentHistory extends State<PaymentHistory> {
       return rows;
     }
     rows = paymentsList.map<ExpandableRow>((e) {
-      print( e.paymentMode);
+      debugPrint( e.paymentMode);
       return ExpandableRow(cells: [
         ExpandableCell<String>(columnTitle: "Date", value:formatter.format(e.date) ),
         ExpandableCell<double>(columnTitle: "Amount", value: e.amount),
@@ -136,8 +136,6 @@ class _PaymentHistory extends State<PaymentHistory> {
             columnTitle: "Payment Mode", value: e.paymentMode),
       ]);
     }).toList();
-
-    print( headers.length == rows.first.cells.length);
     return rows;
   }
   Widget _buildEditDialog(
@@ -156,8 +154,8 @@ class _PaymentHistory extends State<PaymentHistory> {
   }
 
   updateRow(ExpandableRow newRow) {
-    print("update row has been called");
-    print(newRow.cells.first.value);
+    debugPrint("update row has been called");
+    debugPrint(newRow.cells.first.value);
   }
 // Future<List<Payment>> loadPaymentData() async {
 //   paymentsList = await paymentDao.getPaymentDetails();

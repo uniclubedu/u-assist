@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:u_assist/util/Constant.dart';
 
 import '../../../auth/auth_dao.dart';
@@ -8,7 +9,7 @@ import '../../../auth/auth_dao.dart';
 class ClientDAO{
 
   Future<bool> isAccountActivated() async {
-    print("Calling is account activated for uid }");
+    debugPrint("Calling is account activated for uid }");
     String? uid = "";
     await AuthDAO().getUID().then(
           (value) => {uid = value},
@@ -16,7 +17,7 @@ class ClientDAO{
     if(uid == "") {
       return false;
     }
-    print("uid : ${uid}");
+    debugPrint("uid : ${uid}");
     bool isActivated = false;
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(Constant.ACTIVE_CLIENTS)
@@ -24,7 +25,7 @@ class ClientDAO{
         .where("status", isEqualTo: Constant.ACTIVE_STATUS)
         .get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    print("allData ${allData}");
+    debugPrint("allData ${allData}");
     if( null != allData && allData.length>0) {
       isActivated = true;
     }

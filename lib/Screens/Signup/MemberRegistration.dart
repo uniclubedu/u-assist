@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:u_assist/Screens/Register/dao/user_dao.dart';
 import 'package:u_assist/Screens/Register/member.dart';
@@ -80,9 +81,9 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    onPrimary: Colors.white,
+    onPrimary: Colors.black87,
+    primary: Colors.grey[300],
     minimumSize: Size(88, 36),
-    primary: Colors.purple,
     padding: EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -122,7 +123,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   }
 
   registerUser(Member user) async {
-    print("Saving object to the data base");
+    debugPrint("Saving object to the data base");
     Member userObj = Member(
         fullName: user.fullName,
         mobileNumber: user.mobileNumber,
@@ -178,7 +179,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       // child: TextFormField(
                       //   controller: _userNameController,
                       //       validator: (name){
-                      //     print("validation name ${name}");
+                      //     debugPrint("validation name ${name}");
                       //       if(user.fullName == null ||user.fullName.length <3){
                       //         return "Enter a valid user name";
                       //       }else{
@@ -202,6 +203,9 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       TextFieldContainer(
                         key: Key("Full Name"),
                         child: TextFormField(
+
+                          maxLength: 24,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: (name) => name!.isEmpty
                               ? 'Enter Your Name'
                               : (nameRegExp.hasMatch(name)
@@ -230,7 +234,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           key: Key("Mobile Number"),
                           child: TextFormField(
                             validator: (value) {
-                              print(
+                              debugPrint(
                                   "user mobile number =============${user.mobileNumber}");
                               String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
                               RegExp regExp = new RegExp(patttern);
@@ -264,7 +268,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           child: TextFormField(
                             controller: _feesController,
                             validator: (name) {
-                              print("user feesss =============${user.fees}");
+                              debugPrint("user feesss =============${user.fees}");
                               if (user.fees == null ||
                                   user.fees.length <= 0 ||
                                   int.parse(user.fees, onError: (val) => 0) <=
@@ -293,13 +297,29 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                               setState(() {});
                             },
                           )),
-                      RoundedInputField(
-                        key: const Key("address"),
-                        hintText: "Full Address",
-                        icon: Icons.account_box_sharp,
-                        onChanged: (value) {
-                          user.address = value;
-                        },
+                      TextFieldContainer(
+                        key: Key("address"),
+                        child: TextFormField(
+
+                          maxLength: 50,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.home_rounded,
+                              color: kPrimaryColor,
+                            ),
+                            labelText: 'Full Address',
+                            //errorText: "Enter valid fees",
+                            border: InputBorder.none,
+                          ),
+
+                          keyboardType: TextInputType.text,
+                          //validator: validateName,
+                          onChanged: (value) {
+                            user.address = value;
+                            setState(() {});
+                          },
+                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 0, 250, 0),
@@ -317,7 +337,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           groupValue: selectedShift,
                           title: Text("Full Time"),
                           onChanged: (val) {
-                            print("Radio Tile pressed $val");
+                            debugPrint("Radio Tile pressed $val");
                             setSelectedRadioTile(val);
                           },
                           activeColor: Colors.red,
@@ -327,7 +347,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                         groupValue: selectedShift,
                         title: Text("Morning"),
                         onChanged: (val) {
-                          print("Radio Tile pressed $val");
+                          debugPrint("Radio Tile pressed $val");
                           setSelectedRadioTile(val);
                         },
                         activeColor: Colors.red,
@@ -337,7 +357,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                         groupValue: selectedShift,
                         title: Text("Evening"),
                         onChanged: (val) {
-                          print("Radio Tile pressed $val");
+                          debugPrint("Radio Tile pressed $val");
                           setSelectedRadioTile(val);
                         },
                         activeColor: Colors.red,
@@ -360,7 +380,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           onChanged: (membership) {
                             user.membershipStartDate = formatter.format(DateTime.now());
                             user.membershipEndDate = formatter.format(DateTime(DateTime.now().year, DateTime.now().month+1, DateTime.now().day));
-                            print("membership selected ${membership}");
+                            debugPrint("membership selected ${membership}");
                             setMembership(membership);
                           }),
                       RadioListTile(
@@ -368,7 +388,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           groupValue: selectedMembership,
                           title: Text("Quarterly"),
                           onChanged: (membership) {
-                            print("membership selected ${membership}");
+                            debugPrint("membership selected ${membership}");
                             user.membershipStartDate = formatter.format(DateTime.now());
                             user.membershipEndDate = formatter.format(DateTime(DateTime.now().year, DateTime.now().month+3, DateTime.now().day));
                             setMembership(membership);
@@ -409,22 +429,20 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                               final FormState? form =
                                   _registerMemberFormKey.currentState;
                               if (form!.validate()) {
-                                print("Form is valid");
+                                debugPrint("Form is valid");
                                 _isLoading = true;
-                                print(this.user.toJson());
                                 await registerUser(this.user);
                                 _isLoading = false;
                                 Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()),
-                                    (route) => false);
+                                    MaterialPageRoute(builder: (context) => Home()),
+                                        (route) => false);
                               } else {
-                                print("Invalid registration form");
+                                debugPrint("Invalid registration form");
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
+                                primary: kPrimaryColor,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 50, vertical: 20),
                                 textStyle: TextStyle(
