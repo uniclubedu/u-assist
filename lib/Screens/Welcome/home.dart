@@ -331,13 +331,13 @@ class _HomeState extends State<Home> {
   void sendPaymentNotification() {
     print("Sending notification to pending fees members.");
     var smsNotification = SMSNotification();
-    SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();
     for(Member member in usersList){
       if(member.amountPaid < double.parse(member.fees)){
         if(member.mobileNumber != null && !member.mobileNumber.isEmpty){
+          SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();
           smsTemplate.message = "Hi, Sir/Mam an amount of Rs${(int.parse(member.fees) - member.amountPaid).toInt()} is pending. Please make the payment today.";
           smsTemplate.recipents.add(member.mobileNumber);
-          //smsNotification.sending_SMS(smsTemplate.message, smsTemplate.recipents);
+          smsNotification.sending_SMS(smsTemplate.message, smsTemplate.recipents);
         }
       }
     }
