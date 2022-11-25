@@ -33,7 +33,7 @@ class UserDao {
       return user;
     } catch (stacktrace, e) {
       debugPrint(e as String?);
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
     throw Exception("User is not saved");
   }
@@ -99,7 +99,7 @@ class UserDao {
           });
     } catch (stacktrace, e) {
       debugPrint(e as String?);
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
     stdout.writeln("User updated successfully");
     return Future<void>.value();
@@ -150,7 +150,7 @@ class UserDao {
       return usersData;
     } catch (e, stacktrace) {
       debugPrint("Exception while getting user details $e");
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
 
     return usersData;

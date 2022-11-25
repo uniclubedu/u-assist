@@ -1,5 +1,6 @@
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Screens/Login/components/Login.dart';
@@ -34,8 +35,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginScreen(),
-    );;
+
+    return FutureBuilder<User>(
+        future: Future.value(FirebaseAuth.instance.currentUser),
+        builder: (BuildContext context, AsyncSnapshot<User> snapshot){
+          if (snapshot.hasData){
+            User? user = snapshot.data; // this is your user instance
+            /// is because there is user already logged
+            return Home();
+          }
+          /// other way there is no user logged.
+          return LoginScreen();
+        }
+    );
+    if(FirebaseAuth.instance.currentUser == null){
+      return MaterialApp
+        (
+        home:
+        LoginScreen(),
+      );
+    }
   }
 }

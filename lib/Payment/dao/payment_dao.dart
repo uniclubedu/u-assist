@@ -35,7 +35,7 @@ class PaymentDAO {
       return payment;
     } catch (stacktrace, e) {
       debugPrint(e as String?);
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
     throw Exception("Payment is not saved");
   }
@@ -68,7 +68,7 @@ class PaymentDAO {
 
     } catch (e, stacktrace) {
       debugPrint("Exception while getting total earning for uid ${uid} $e");
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
 
     return totalEarning;
@@ -95,7 +95,7 @@ class PaymentDAO {
       return paymentsData;
     } catch (e, stacktrace) {
       debugPrint("Exception while getting user details $e");
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
 
     return paymentsData;
@@ -128,7 +128,7 @@ class PaymentDAO {
       return totalPayment;
     } catch (e, stacktrace) {
       debugPrint("Exception while getting user details $e");
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
     }
     return totalPayment;
   }

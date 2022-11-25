@@ -265,7 +265,7 @@ class PinPutViewState extends State<PinPutView>{
         }
       });
     } catch (stacktrace, e) {
-      debugPrint(stacktrace as String?);
+      debugPrint("Stacktrace : ${stacktrace}");
       debugPrint(e as String?);
       FocusScope.of(context).unfocus();
       SnackBar(content: Text(pin));
