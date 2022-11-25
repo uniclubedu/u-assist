@@ -59,7 +59,7 @@ class _MemberProfile extends State<MemberProfile> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                height: 250,
+                height: 280,
                 child: Card(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class _MemberProfile extends State<MemberProfile> {
                         //width: 220,
                         child: Container(
                           //decoration: BoxDecoration(color: Colors.purple),
-                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0,0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -123,7 +123,7 @@ class _MemberProfile extends State<MemberProfile> {
                               ),
                               const Divider(),
                               Text(
-                                'Shift: ${widget.member.shift} ',
+                                'Shift:  ${widget.member.shift =='1'?'Full Time':widget.member.shift =='2'?'Morning':'Evening'} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),

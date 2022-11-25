@@ -32,7 +32,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0,0),
-      height: 180,
+      height: 160,
       width: 280,
       //padding: const EdgeInsets.all(26),
       child: InkWell(
@@ -46,89 +46,98 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
             //       (fullName: ' ', mobileNumber: '', address: '', profileImageURL: ''))),
             //         (route) => false);
           },
-
           child: Card(
-          child: Row(
+            child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 170,
+          Expanded(
+           // width: 170,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(10,0, 10,0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:  [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0,0, 80,0),
-                    child:  Text('${widget.user.fullName} ',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black
+              padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:  [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0,0, 80,0),
+                      child:  Text('${widget.user.fullName} ',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black
+                        ),
+
                       ),
-
                     ),
-                  )
-                  ,
-                  const Divider(),
-                  buildMemberAttributes(widget.user.mobileNumber),
-                  const Divider(),
-                  buildMemberAttributes("Address :"+widget.user.address),
-                  const Divider(),
-                  buildMemberAttributes("Amount Paid :"+(widget.user.amountPaid.toString())),
 
-                //  Text(" details"),
+                    const Divider(),
+                    buildMemberAttributes(widget.user.mobileNumber),
+                    const Divider(),
+                    buildMemberAttributes("Address :"+widget.user.address),
+                    const Divider(),
+                    buildMemberAttributes("Amount Paid :"+(widget.user.amountPaid.toString())),
 
-                ],
-              ),
+                    //  Text(" details"),
+
+                  ],
+                ),
 
             ),
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if(widget.user.profileImageURL != null && widget.user.profileImageURL != '')
-                Container(
-                    padding: const EdgeInsets.fromLTRB(80,10, 0, 0),
-                    child: CircleAvatar(radius: 40,
-                      backgroundImage:Image.network(widget.user.profileImageURL).image,
-                    )
-                )
-              else
-                Container(
-                    padding: const EdgeInsets.fromLTRB(80,10, 0, 0),
-                    child: CircleAvatar(radius: 40,
-                      backgroundImage:AssetImage("assets/images/profile.png"),
-                    )
-                ),
-              Container(
-                margin: EdgeInsets.only(bottom: 10, left: 60, top: 15),
-                child: Column(
-                  children: [
-                      if(widget.user.amountPaid < double.parse(widget.user.fees))
-                        Text(
-                          "Pending ${(int.parse(widget.user.fees) - widget.user.amountPaid).toInt()}",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Open Sans',
-                            fontSize: 10,
-
-                          ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if(widget.user.profileImageURL != null && widget.user.profileImageURL != '')
+                    Container(
+                        margin: const EdgeInsets.fromLTRB(0,0,0, 0),
+                        child: CircleAvatar(radius: 40,
+                          backgroundImage:Image.network(widget.user.profileImageURL).image,
                         )
-                    else
-                        Text(
-                          "Paid",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Open Sans',
-                            fontSize: 20,
-
-                          ),
+                    )
+                  else
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(0,0, 0,0),
+                        child: CircleAvatar(radius: 40,
+                          backgroundImage:AssetImage("assets/images/profile.png"),
                         )
-                  ],
+                    ),
+                ],
+              ),
+             Row(
+               children: [
+                 Container(
+                   margin: EdgeInsets.only(bottom: 0, left: 0, top: 10),
+                   child: Column(
+                     children: [
+                       if(widget.user.amountPaid < double.parse(widget.user.fees))
+                         Text(
+                           "Pending ${(int.parse(widget.user.fees) - widget.user.amountPaid).toInt()}",
+                           style: TextStyle(
+                             color: Colors.red,
+                             fontWeight: FontWeight.bold,
+                             fontFamily: 'Open Sans',
+                             fontSize: 10,
 
-                ),
-              )
+                           ),
+                         )
+                       else
+                         Text(
+                           "Paid",
+                           style: TextStyle(
+                             color: Colors.green,
+                             fontWeight: FontWeight.bold,
+                             fontFamily: 'Open Sans',
+                             fontSize: 20,
+
+                           ),
+                         )
+                     ],
+
+                   ),
+                 )
+               ],
+             )
             ],
           )
 
@@ -145,7 +154,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
 
                 child: Text('${parameter}',
                       style: TextStyle(
-                          fontSize: 12,
+                          fontSize:12,
                           color: Colors.black
                       ),
                     )
