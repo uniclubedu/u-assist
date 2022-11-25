@@ -13,12 +13,12 @@ class Member {
   File? profileImage;
   String profileImageURL;
   var fees;
-  var shift;
+  String shift;
   String? joiningDate;
   String? membershipStartDate;
   String? membershipEndDate;
-  var amountPaid;
-  var membership;
+  double amountPaid =0;
+  String membership;
 
   Member(
       {
@@ -30,12 +30,12 @@ class Member {
       this.profileImage,
       required this.profileImageURL,
       this.fees,
-      this.shift,
+      this.shift="",
       this.joiningDate,
       this.membershipStartDate,
       this.membershipEndDate,
-      this.membership,
-      this.amountPaid});
+      this.membership="",
+      this.amountPaid=0});
 
   factory Member.fromJson(Map<String, dynamic> json) {
     return Member(

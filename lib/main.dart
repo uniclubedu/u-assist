@@ -36,23 +36,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return FutureBuilder<User>(
-        future: Future.value(FirebaseAuth.instance.currentUser),
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot){
-          if (snapshot.hasData){
-            User? user = snapshot.data; // this is your user instance
-            /// is because there is user already logged
-            return MaterialApp(home:Home());
-          }
-          /// other way there is no user logged.
-          return LoginScreen();
-        }
-    );
+    // return FutureBuilder<User>(
+    //     future: Future.value(FirebaseAuth.instance.currentUser),
+    //     builder: (BuildContext context, AsyncSnapshot<User> snapshot){
+    //       if (snapshot.hasData){
+    //         User? user = snapshot.data; // this is your user instance
+    //         /// is because there is user already logged
+    //         return MaterialApp(home:Home());
+    //       }
+    //       /// other way there is no user logged.
+    //       return LoginScreen();
+    //     }
+    // );
     if(FirebaseAuth.instance.currentUser == null){
       return MaterialApp
         (
         home:
         LoginScreen(),
+      );
+    }else{
+      return MaterialApp
+      (
+          home:Home(),
       );
     }
   }

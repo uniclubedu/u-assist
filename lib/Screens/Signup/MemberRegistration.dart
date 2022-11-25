@@ -124,19 +124,8 @@ class _MemberRegistrationState extends State<MemberRegistration> {
 
   registerUser(Member user) async {
     debugPrint("Saving object to the data base");
-    Member userObj = Member(
-        fullName: user.fullName,
-        mobileNumber: user.mobileNumber,
-        address: user.address,
-        profileImage: user.profileImage,
-        profileImageURL: '',
-        fees: user.fees,
-        shift: user.shift,
-        membershipStartDate: user.membershipStartDate,
-        membershipEndDate: user.membershipEndDate,
-        joiningDate: this.user.joiningDate,
-        memberId: '');
-    await userDao.saveUser(userObj);
+    user.joiningDate = formatter.format(DateTime.now());
+    await userDao.saveUser(user);
     if (user.mobileNumber != null && !user.mobileNumber.isEmpty) {
       var smsNotification = SMSNotification();
       SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();

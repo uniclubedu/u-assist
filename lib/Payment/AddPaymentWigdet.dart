@@ -141,7 +141,7 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
                       padding: const EdgeInsets.only(),
                       child: (paymentDate == null)
                           ? Text('Payment Date')
-                          : Text(paymentDate!),
+                          : Text(paymentDate),
                     )),
                 onPressed: () {
                   _selectDate(context);
