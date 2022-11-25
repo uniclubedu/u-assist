@@ -10,16 +10,19 @@ import 'package:u_assist/Screens/Register/member.dart';
 
 import '../components/rounded_button.dart';
 import '../components/rounded_input_field.dart';
+import '../notification/SMSNotification.dart';
+import '../util/Constant.dart';
+import '../util/SMSNotificationTemplate.dart';
 
 final items = [
   'CASH',
-  'GOOGLE_PAY',
-  'PHONE_PAY',
+  'GOOGLE PAY',
+  'PHONE PAY',
   'PAYTM',
   'NETBANKING',
-  'CREDIT_CARD',
-  'DEBIT_CARD',
-  'AMAZON_PAY',
+  'CREDIT CARD',
+  'DEBIT CARD',
+  'AMAZON PAY',
 ];
 
 // ignore: must_be_immutable
@@ -40,8 +43,7 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
   String dropdownValue = items.first;
   late String memberId = widget.member.memberId;
   DateTime selectedDate = DateTime.now();
-  String? paymentDate;
-
+  String paymentDate = DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
   late double amount;
   late String paymentMode = 'CASH';
   late bool _isLoading;
@@ -74,13 +76,32 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
+
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101),
+      builder: (context,child){
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.purple, // header background color
+                onPrimary: Colors.white, // header text color
+                onSurface: Colors.black, // body text color
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Colors.black, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          );
+      }
+    );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        paymentDate = formatter.format(selectedDate);
+        paymentDate = formatter.format(DateTime.now());
       });
     }
   }
@@ -126,6 +147,8 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
                   _selectDate(context);
                 },
               ),
+
+
               Container(
                 padding: const EdgeInsets.only(right: 150, bottom: 5),
                 child: Text("Payment Mode", style: TextStyle(fontSize: 15)),
@@ -186,9 +209,17 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
       amount: amount,
       paymentMode: paymentMode,
     );
-    print("Saving payment detflutter_testails: ${payment.toJson()}");
-    paymentDao
+    debugPrint("Saving payment detflutter_testails: ${payment.toJson()}");
+    await paymentDao
         .savePayment(payment)
-        .then((value) => print("Payment saved successfully"));
+        .then((value) => debugPrint("Payment saved successfully"));
+
+    if (widget.member.mobileNumber != null && !widget.member.mobileNumber.isEmpty) {
+      var smsNotification = SMSNotification();
+      SMSNotificationTemplate smsTemplate = SMSNotificationTemplate();
+      smsTemplate.message = "Thanks for making a payment of Rs${amount}.\nRegards\nUniclub Admin";
+      smsTemplate.recipents.add(widget.member.mobileNumber);
+      smsNotification.sending_SMS(smsTemplate.message, smsTemplate.recipents);
+    }
   }
 }

@@ -39,7 +39,7 @@ class PinPutViewState extends State<PinPutView>{
   }
 
   _verifyPhone() async {
-    print("varifying phone otp");
+    debugPrint("varifying phone otp");
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '+91${widget.phone}',
         verificationCompleted: (AuthCredential credential) async {
@@ -47,8 +47,6 @@ class PinPutViewState extends State<PinPutView>{
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
-              print("user value ");
-              print(value.user);
               if(await ClientDAO().isAccountActivated()){
                 Navigator.pushAndRemoveUntil(
                     context,
@@ -66,14 +64,14 @@ class PinPutViewState extends State<PinPutView>{
         verificationFailed: (FirebaseAuthException e) {
 
           if (e.code == 'invalid-phone-number') {
-            print('The provided phone number is not valid.');
+            debugPrint('The provided phone number is not valid.');
           }
-          print(e.message);
-          print("varification failed");
+          debugPrint(e.message);
+          debugPrint("varification failed");
         },
         codeSent: (String verficationID,[ int? resendtoken]) async{
           setState(() {
-            print("code sent varification id {}"+verficationID);
+            debugPrint("code sent varification id {}"+verficationID);
             _verificationCode = verficationID;
           });
           //PhoneAuthProvider.(verificationId: verificationId, smsCode: smsCode)
@@ -85,7 +83,7 @@ class PinPutViewState extends State<PinPutView>{
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {
-            print("code auto retrival timeout");
+            debugPrint("code auto retrival timeout");
             _verificationCode = verificationID;
           });
         },
@@ -245,14 +243,14 @@ class PinPutViewState extends State<PinPutView>{
       ..showSnackBar(snackBar);
   }
   login(String pin) async {
-    print("Login method is getting caled after pin submit ${_verificationCode}");
+    debugPrint("Login method is getting caled after pin submit ${_verificationCode}");
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
           verificationId: _verificationCode, smsCode: pin))
           .then((value) async {
         if (value.user != null) {
-          print("checking if user is activated");
+          debugPrint("checking if user is activated");
           if(await ClientDAO().isAccountActivated()){
             Navigator.pushAndRemoveUntil(
                 context,
@@ -267,8 +265,8 @@ class PinPutViewState extends State<PinPutView>{
         }
       });
     } catch (stacktrace, e) {
-      print(stacktrace);
-      print(e);
+      debugPrint("Stacktrace : ${stacktrace}");
+      debugPrint(e as String?);
       FocusScope.of(context).unfocus();
       SnackBar(content: Text(pin));
       const SnackBar(content:

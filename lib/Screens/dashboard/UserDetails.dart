@@ -17,7 +17,7 @@ class _UserInfoState extends State<UserInfoRow> {
   @override
   void initState() {
     // TODO: implement initState
-    print("init state is getting called");
+    debugPrint("init state is getting called");
     super.initState();
     //userDao.getUserDetails();
   }

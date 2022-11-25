@@ -96,7 +96,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
   }
 
   updateUser(Member user) async {
-    print("Updating object to the data base");
+    debugPrint("Updating object to the data base");
     await userDao.updateUser(user);
     stdout.writeln("User updated successfully ");
   }
@@ -168,7 +168,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
                         title: Text("Full Time"),
                         subtitle: Text("7 AM to 10 PM"),
                         onChanged: (val) {
-                          print("Radio Tile pressed $val");
+                          debugPrint("Radio Tile pressed $val");
                           setSelectedRadioTile(val);
                         },
                         activeColor: Colors.red,
@@ -179,7 +179,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
                       title: Text("Morning"),
                       subtitle: Text("7 AM to 2 PM"),
                       onChanged: (val) {
-                        print("Radio Tile pressed $val");
+                        debugPrint("Radio Tile pressed $val");
                         setSelectedRadioTile(val);
                       },
                       activeColor: Colors.red,
@@ -190,7 +190,7 @@ class _UserRegistrationState extends State<MemberUpdate> {
                       title: Text("Evening"),
                       subtitle: Text("2 PM to 10 PM"),
                       onChanged: (val) {
-                        print("Radio Tile pressed $val");
+                        debugPrint("Radio Tile pressed $val");
                         setSelectedRadioTile(val);
                       },
                       activeColor: Colors.red,
@@ -212,7 +212,6 @@ class _UserRegistrationState extends State<MemberUpdate> {
                       text: "Update",
                       press: () async {
                         _isLoading = true;
-                        print(this.user.toJson());
                         await updateUser(this.user);
                         _isLoading = false;
                         Navigator.pushAndRemoveUntil(

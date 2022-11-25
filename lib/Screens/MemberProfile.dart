@@ -59,7 +59,7 @@ class _MemberProfile extends State<MemberProfile> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                height: 250,
+                height: 280,
                 child: Card(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,10 +82,11 @@ class _MemberProfile extends State<MemberProfile> {
                               backgroundImage:
                                   AssetImage("assets/images/profile.png"),
                             )),
-                      SizedBox(
-                        //width: 150,
+                      Expanded(
+                        //width: 220,
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          //decoration: BoxDecoration(color: Colors.purple),
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0,0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -122,7 +123,7 @@ class _MemberProfile extends State<MemberProfile> {
                               ),
                               const Divider(),
                               Text(
-                                'Shift: ${widget.member.shift} ',
+                                'Shift:  ${widget.member.shift =='1'?'Full Time':widget.member.shift =='2'?'Morning':'Evening'} ',
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
@@ -132,6 +133,29 @@ class _MemberProfile extends State<MemberProfile> {
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.black),
                               ),
+                              const Divider(),
+                              if(int.parse(widget.member.fees) > (widget.member.amountPaid).toInt())
+                              Text(
+                                "Pending : ${(int.parse(widget.member.fees) - widget.member.amountPaid).toInt()}",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Open Sans',
+                                  fontSize: 12,
+
+                                ),
+                              )
+                              else
+                                Text(
+                                  "Paid : ${(widget.member.amountPaid).toInt()}",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 12,
+
+                                  ),
+                                )
                               // Text(" details"),
                             ],
                           ),
@@ -139,8 +163,9 @@ class _MemberProfile extends State<MemberProfile> {
                       ),
 
                       Container(
-                        height: 200,
-                        padding: const EdgeInsets.fromLTRB(60, 10, 0, 0),
+                        //height: 200,
+                        //decoration: BoxDecoration(color: Colors.red),
+                        alignment: Alignment.topRight,
                         child: Column(
                           children: [
                             GestureDetector(
@@ -168,8 +193,9 @@ class _MemberProfile extends State<MemberProfile> {
                                     }));
                               }),
                               child: Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 110, 0, 10),
+                                // padding:
+                                //     const EdgeInsets.fromLTRB(0, 0, 0, 0),
+    padding: EdgeInsets.only(top: 180),
                                 child: Icon(
                                   delete,
                                   size: 30,
@@ -245,8 +271,7 @@ class _MemberProfile extends State<MemberProfile> {
                                     TextButton.icon(
                                       // <-- ElevatedButton
                                       onPressed: () {
-                                        print("member profile hello");
-                                        print(widget.member.toJson());
+                                        debugPrint("member profile hello");
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

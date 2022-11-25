@@ -1,10 +1,8 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowEarning extends StatefulWidget {
-
   double totalEarning;
+
   ShowEarning(this.totalEarning, {Key? key}) : super(key: key);
 
   @override
@@ -19,8 +17,34 @@ class _ShowEarningState extends State<ShowEarning> {
         child: Row(
           children: [
             Container(
-              child: Text("Total Earning of this month : ${widget.totalEarning}"),
-            )
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "Total Earning of this month :",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "${widget.totalEarning.toInt()}",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Open Sans',
+                            fontSize: 20,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ))
           ],
         ),
       ),
