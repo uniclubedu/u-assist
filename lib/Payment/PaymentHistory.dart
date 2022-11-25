@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:expandable_datatable/expandable_datatable.dart';
+import 'package:expandable_datatable/src/widget/edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:u_assist/Payment/Payment.dart';
 import '../Payment/dao/payment_dao.dart';
@@ -8,6 +9,7 @@ import 'package:intl/src/intl/date_format.dart';
 
 import '../Screens/Util/NewsCardSkelton.dart';
 import '../constants.dart';
+
 
 
 // ignore: must_be_immutable
@@ -77,7 +79,35 @@ class _PaymentHistory extends State<PaymentHistory> {
           body:StreamBuilder<Payment>(
             stream: paymentDataController.stream,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
+              if(_isLoading){
+                return ListView.separated(
+                  itemCount: 5,
+                  itemBuilder: (context, index) => const NewsCardSkelton(),
+                  separatorBuilder: (context, index) =>
+                  const SizedBox(height: defaultPadding, width:10,),
+                );
+              }
+              else if((!snapshot.hasData && _isLoading) || paymentsList
+                  .length<=0){
+                return  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                Container(
+                margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+              child: Text("Payment history is unavailable.",
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+              fontSize:20,
+              color: Colors.indigo,
+              fontWeight: FontWeight.normal
+              ),
+              )
+              ),
+                  ],
+                );
+              }
+              else if (snapshot.hasData) {
                 return buildPaymentHistory(context);
                 //return Text(snapshot.data.toString());
               } else {
@@ -134,7 +164,7 @@ class _PaymentHistory extends State<PaymentHistory> {
         ExpandableCell<double>(columnTitle: "Amount", value: e.amount),
         ExpandableCell<String>(
             columnTitle: "Payment Mode", value: e.paymentMode),
-      ]);
+      ], );
     }).toList();
     return rows;
   }
