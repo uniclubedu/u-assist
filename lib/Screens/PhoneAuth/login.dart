@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _controller = TextEditingController();
+  bool isLoading=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

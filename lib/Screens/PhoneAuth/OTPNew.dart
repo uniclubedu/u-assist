@@ -5,6 +5,7 @@ import 'package:u_assist/Screens/Register/dao/client_dao.dart';
 import 'package:u_assist/Screens/dashboard/ContactAdmin.dart';
 
 import '../../components/rounded_button.dart';
+import '../Util/CommonModel.dart';
 import '../Welcome/home.dart';
 
 class PinPutView extends StatefulWidget{
@@ -25,6 +26,7 @@ class PinPutViewState extends State<PinPutView>{
   final formKey = GlobalKey<FormState>();
   late String _verificationCode;
   late String _pin;
+  bool isLoading = true;
   @override
   void initState() {
     _verifyPhone();
@@ -96,7 +98,6 @@ class PinPutViewState extends State<PinPutView>{
     const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
-
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -198,15 +199,18 @@ class PinPutViewState extends State<PinPutView>{
                         ),
                       ),
                     ),
-                    RoundedButton(
+                    isLoading?RoundedButton(
                       key: const Key("verify"),
                       text: "Verify",
                       press: () async {
+                        isLoading=true;
                         login(_pin);
                         if(formKey.currentState!.validate()){
 
                         }
                       },
+                    ):Center(
+                      child: CircularProgressIndicator(),
                     ),
                   ],
                 ),
@@ -265,8 +269,9 @@ class PinPutViewState extends State<PinPutView>{
         }
       });
     } catch (stacktrace, e) {
+      isLoading =false;
       debugPrint("Stacktrace : ${stacktrace}");
-      debugPrint(e as String?);
+      debugPrint("Exception ${e}");
       FocusScope.of(context).unfocus();
       SnackBar(content: Text(pin));
       const SnackBar(content:

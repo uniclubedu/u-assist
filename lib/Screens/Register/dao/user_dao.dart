@@ -52,7 +52,9 @@ class UserDao {
 
   Future<Set<void>> deleteUser(Member member) async {
     stdout.writeln("Delete user ${member.fullName}");
-    await deleteUserImage(member.profileImageURL);
+    if(null != member.profileImageURL && !member.profileImageURL.isEmpty){
+      await deleteUserImage(member.profileImageURL);
+    }
     var userSnap = await FirebaseFirestore.instance
         .collection(Constant.USER_COLLECTION_NAME)
         .where('userId', isEqualTo: member.memberId)
