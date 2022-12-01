@@ -407,7 +407,10 @@ class _HomeState extends State<Home> {
       return;
     }
     usersList.forEach((userDetail) {
-      if (userDetail.fullName.contains(text) )
+      if (userDetail.fullName.toLowerCase().contains(text.toLowerCase()) ||
+          userDetail.mobileNumber.toLowerCase().contains(text.toLowerCase())
+      || userDetail.shift.toLowerCase().contains(text.toLowerCase())
+      || userDetail.address.toLowerCase().contains(text.toLowerCase()))
         tempList.add(userDetail);
     });
     setState(() {});

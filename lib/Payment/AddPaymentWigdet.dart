@@ -10,6 +10,8 @@ import 'package:u_assist/Screens/Register/member.dart';
 
 import '../components/rounded_button.dart';
 import '../components/rounded_input_field.dart';
+import '../components/text_field_container.dart';
+import '../constants.dart';
 import '../notification/SMSNotification.dart';
 import '../util/Constant.dart';
 import '../util/SMSNotificationTemplate.dart';
@@ -65,13 +67,13 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
   @override
   void initState() {
     _isLoading = false;
-
+    amount=0;
     // TODO: implement initState
     super.initState();
   }
 
   final paymentDao = PaymentDAO();
-  final GlobalKey<FormState> userRegistrationFrmKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> addPaymentKey = GlobalKey<FormState>();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -119,85 +121,114 @@ class _PaymentWidgetState extends State<AddPaymentWigdet> {
           backgroundColor: Colors.purple,
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              RoundedInputField(
-                key: const Key("amount"),
-                hintText: "Amount",
-                onChanged: (value) {
-                  amount = double.parse(value);
-                },
-                icon: Icons.currency_rupee,
-              ),
-              Container(
-                padding: const EdgeInsets.only(right: 150, bottom: 5),
-                child: Text("Payment Date", style: TextStyle(fontSize: 15)),
-              ),
-              ElevatedButton(
-                style: raisedButtonStyle,
-                child: Container(
-                    padding: const EdgeInsets.only(right: 150),
+          child:Form(
+              key: addPaymentKey,
+              child: Column(
+                children: [
+                  TextFieldContainer(
+                      key: Key("Amount"),
+                      child: TextFormField(
+                        validator: (name) {
+                          if (amount == null ||
+                              amount <= 0) {
+                            return "Amount should be numeric and greater then "
+                                "0.";
+                          } else if (amount.toString().length > 10) {
+                            return "Amount value should be less then 99999999.";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.currency_rupee,
+                            color: kPrimaryColor,
+                          ),
+                          labelText: 'Amount',
+                          //errorText: "Enter valid fees",
+                          border: InputBorder.none,
+                        ),
+
+                        keyboardType: TextInputType.text,
+                        //validator: validateName,
+                        onChanged: (value) {
+                          amount = double.parse(value);
+                          setState(() {});
+                        },
+                      )),
+                  Container(
+                    padding: const EdgeInsets.only(right: 150, bottom: 5),
+                    child: Text("Payment Date", style: TextStyle(fontSize: 15)),
+                  ),
+                  ElevatedButton(
+                    style: raisedButtonStyle,
                     child: Container(
-                      padding: const EdgeInsets.only(),
-                      child: (paymentDate == null)
-                          ? Text('Payment Date')
-                          : Text(paymentDate),
-                    )),
-                onPressed: () {
-                  _selectDate(context);
-                },
-              ),
+                        padding: const EdgeInsets.only(right: 150),
+                        child: Container(
+                          padding: const EdgeInsets.only(),
+                          child: (paymentDate == null)
+                              ? Text('Payment Date')
+                              : Text(paymentDate),
+                        )),
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                  ),
 
 
-              Container(
-                padding: const EdgeInsets.only(right: 150, bottom: 5),
-                child: Text("Payment Mode", style: TextStyle(fontSize: 15)),
-              ),
-              //DropdownButtonFormField(items: items, onChanged: onChanged)
-              Container(
-                padding: EdgeInsets.only(right: 100),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+                  Container(
+                    padding: const EdgeInsets.only(right: 150, bottom: 5),
+                    child: Text("Payment Mode", style: TextStyle(fontSize: 15)),
+                  ),
+                  //DropdownButtonFormField(items: items, onChanged: onChanged)
+                  Container(
+                    padding: EdgeInsets.only(right: 100),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
 
-                // dropdown below..
-                child: DropdownButton<String>(
-                  value: paymentMode,
-                  onChanged: (newValue) =>
-                      setState(() => paymentMode = newValue!),
-                  items: items
-                      .map<DropdownMenuItem<String>>(
-                          (String value) => DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              ))
-                      .toList(),
+                    // dropdown below..
+                    child: DropdownButton<String>(
+                      value: paymentMode,
+                      onChanged: (newValue) =>
+                          setState(() => paymentMode = newValue!),
+                      items: items
+                          .map<DropdownMenuItem<String>>(
+                              (String value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          ))
+                          .toList(),
+
+                      // add extra sugar..
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                    ),
+                  ),
+
+                  RoundedButton(
+                    key: const Key("value11"),
+                    text: "Add Payment",
+                    press: () async {
+                      final FormState? form = addPaymentKey.currentState;
+                      if(form!.validate()){
+                        _isLoading = true;
+                        await savePayment();
+                        _isLoading = false;
+                        Navigator.of(context).pop();
+                      }
+                      // Navigator.pushAndRemoveUntil(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => MemberProfile(widget.member)),
+                      //     (route) => false);
+                    },
+                  ),
 
                   // add extra sugar..
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 42,
-                  underline: SizedBox(),
-                ),
-              ),
-
-              RoundedButton(
-                key: const Key("value11"),
-                text: "Add Payment",
-                press: () async {
-                  _isLoading = true;
-                  await savePayment();
-                  _isLoading = false;
-                  Navigator.of(context).pop();
-                  // Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => MemberProfile(widget.member)),
-                  //     (route) => false);
-                },
-              ),
-
-              // add extra sugar..
-            ],
+                ],
+              )
           ),
         ));
   }

@@ -10,6 +10,7 @@ import 'package:u_assist/Screens/Register/dao/user_dao.dart';
 import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/Screens/Signup/components/background.dart';
 import 'package:u_assist/Screens/Signup/components/user_image_picker.dart';
+import 'package:u_assist/Screens/Util/CommonModel.dart';
 import 'package:u_assist/components/rounded_input_field.dart';
 import 'package:u_assist/notification/SMSNotification.dart';
 import 'package:u_assist/util/Constant.dart';
@@ -411,7 +412,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                           (null != user.fees &&
                               !user.fees.toString().isEmpty &&
                               int.parse(user.fees, onError: (val) => 0) > 0))
-                        ElevatedButton(
+                        !_isLoading?ElevatedButton(
                             key: const Key("value88"),
                             child: Text("Add Member"),
                             onPressed: () async {
@@ -421,7 +422,6 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                                 debugPrint("Form is valid");
                                 _isLoading = true;
                                 await registerUser(this.user);
-                                _isLoading = false;
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(builder: (context) => Home()),
@@ -435,7 +435,10 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 50, vertical: 20),
                                 textStyle: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold)))
+                                    fontSize: 30, fontWeight: FontWeight
+                                    .bold))):Center(
+                          child: CircularProgressIndicator(),
+                        )
                       else
                         ElevatedButton(
                             key: const Key("value11"),
