@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:u_assist/Payment/dao/payment_dao.dart';
 import 'package:u_assist/auth/auth_dao.dart';
 import 'package:u_assist/util/Constant.dart';
 import 'package:uuid/uuid.dart';
-
 import '../member.dart';
 
 class UserDao {

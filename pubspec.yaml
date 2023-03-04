@@ -48,7 +48,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.2.39
   uuid: ^3.0.6
   expandable_datatable: ^0.0.6
-  pinput: ^2.2.16
+  pinput: ^2.2.31
   flutter_sms: ^2.3.3
 dev_dependencies:
   flutter_test:

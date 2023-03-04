@@ -1,16 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/src/intl/date_format.dart';
-import 'package:u_assist/Screens/Register/member.dart';
 import 'package:u_assist/util/Constant.dart';
-import 'package:uuid/uuid.dart';
-
 import '../../Payment/Payment.dart';
 import '../../auth/auth_dao.dart';
 
